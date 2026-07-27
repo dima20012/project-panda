@@ -1,0 +1,353 @@
+{
+  "users": [
+    {
+      "id": "usr_owner",
+      "username": "Alex_Dev",
+      "displayName": "Alex (Host)",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "status": "online",
+      "customStatus": "🚀 Hosting Harmony Server locally",
+      "bannerColor": "#5865F2",
+      "roles": [
+        "Admin",
+        "Developer"
+      ],
+      "createdAt": "2026-07-27T06:45:51.917Z"
+    },
+    {
+      "id": "usr_synth",
+      "username": "SynthBot",
+      "displayName": "Synth Bot 🤖",
+      "avatar": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150&auto=format&fit=crop&q=80",
+      "status": "online",
+      "customStatus": "⚡ Automated Local Assistant",
+      "bannerColor": "#EB459E",
+      "isBot": true,
+      "roles": [
+        "Bot",
+        "System"
+      ],
+      "createdAt": "2026-07-27T06:45:51.917Z"
+    },
+    {
+      "id": "usr_elena",
+      "username": "Elena_Design",
+      "displayName": "Elena Design",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "status": "online",
+      "customStatus": "🎨 Working on dark glassmorphism UI",
+      "bannerColor": "#57F287",
+      "roles": [
+        "Designer"
+      ],
+      "createdAt": "2026-07-27T06:45:51.917Z"
+    },
+    {
+      "id": "usr_marcus",
+      "username": "Marcus_Gamer",
+      "displayName": "Marcus G.",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "status": "online",
+      "customStatus": "🎮 In Voice Lounge (Do Not Disturb)",
+      "bannerColor": "#FEE75C",
+      "roles": [
+        "Gamer"
+      ],
+      "createdAt": "2026-07-27T06:45:51.917Z"
+    }
+  ],
+  "servers": [
+    {
+      "id": "srv_harmony",
+      "name": "Harmony HQ",
+      "icon": "⚡",
+      "iconBg": "linear-gradient(135deg, #5865F2 0%, #7289DA 100%)",
+      "description": "The official local self-hosted hub for chat, voice, and video.",
+      "ownerId": "usr_owner",
+      "inviteCode": "HARMONY-LOCAL-2026",
+      "categories": [
+        {
+          "id": "cat_welcome",
+          "name": "WELCOME & INFO",
+          "channels": [
+            {
+              "id": "chn_announcements",
+              "name": "announcements",
+              "type": "text",
+              "topic": "Official updates & local hosting announcements"
+            },
+            {
+              "id": "chn_rules",
+              "name": "rules-and-faq",
+              "type": "text",
+              "topic": "Local server guidelines & quick commands"
+            }
+          ]
+        },
+        {
+          "id": "cat_text",
+          "name": "TEXT CHANNELS",
+          "channels": [
+            {
+              "id": "chn_general",
+              "name": "general",
+              "type": "text",
+              "topic": "General lounge for everyone!"
+            },
+            {
+              "id": "chn_dev",
+              "name": "dev-lounge",
+              "type": "text",
+              "topic": "WebRTC, Node.js & local hosting discussions"
+            },
+            {
+              "id": "chn_media",
+              "name": "media-and-screenshots",
+              "type": "text",
+              "topic": "Share images, code snippets, and designs"
+            }
+          ]
+        },
+        {
+          "id": "cat_voice",
+          "name": "VOICE & VIDEO ROOMS",
+          "channels": [
+            {
+              "id": "chn_voice_gen",
+              "name": "General Voice",
+              "type": "voice",
+              "userLimit": 0
+            },
+            {
+              "id": "chn_voice_gaming",
+              "name": "Gaming Lounge 🎮",
+              "type": "voice",
+              "userLimit": 10
+            },
+            {
+              "id": "chn_voice_stream",
+              "name": "Screen Share 🎥",
+              "type": "voice",
+              "userLimit": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "srv_gaming",
+      "name": "LAN Gaming Realm",
+      "icon": "🎮",
+      "iconBg": "linear-gradient(135deg, #ED4245 0%, #E67E22 100%)",
+      "description": "High performance local gaming server for voice & squad tactics.",
+      "ownerId": "usr_marcus",
+      "inviteCode": "GAMING-LAN-99",
+      "categories": [
+        {
+          "id": "cat_gaming_text",
+          "name": "TEXT CHANNELS",
+          "channels": [
+            {
+              "id": "chn_squad_chat",
+              "name": "squad-chat",
+              "type": "text",
+              "topic": "Coordinate matches and gaming sessions"
+            }
+          ]
+        },
+        {
+          "id": "cat_gaming_voice",
+          "name": "SQUAD VOICE",
+          "channels": [
+            {
+              "id": "chn_squad_voice_1",
+              "name": "Squad Voice A",
+              "type": "voice",
+              "userLimit": 5
+            },
+            {
+              "id": "chn_squad_voice_2",
+              "name": "Squad Voice B",
+              "type": "voice",
+              "userLimit": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "messages": {
+    "chn_announcements": [
+      {
+        "id": "msg_welcome_1",
+        "channelId": "chn_announcements",
+        "authorId": "usr_synth",
+        "content": "# 🚀 Welcome to Harmony!\nThis is your **self-hosted, ultra-fast Discord alternative** running locally on your machine or local network.\n\n### Key Features Enabled:\n- **Real-time Messaging** with rich Markdown & attachments\n- **WebRTC Voice & Video Channels** with high audio fidelity\n- **Screen Share** with zero cloud telemetry\n- **Direct Messages & Custom User Profiles**\n- 100% data privacy & local persistence!",
+        "timestamp": "2026-07-27T04:45:51.917Z",
+        "reactions": {
+          "🎉": [
+            "usr_owner",
+            "usr_elena"
+          ],
+          "🚀": [
+            "usr_marcus"
+          ]
+        },
+        "pinned": true
+      },
+      {
+        "id": "msg_1785134999253_9qnr",
+        "channelId": "chn_announcements",
+        "timestamp": "2026-07-27T06:49:59.253Z",
+        "reactions": {},
+        "pinned": false,
+        "authorId": "usr_owner",
+        "content": "ssdfsdfsdf",
+        "attachment": null,
+        "replyTo": null
+      },
+      {
+        "id": "msg_1785134999452_q68e",
+        "channelId": "chn_announcements",
+        "timestamp": "2026-07-27T06:49:59.452Z",
+        "reactions": {},
+        "pinned": false,
+        "authorId": "usr_owner",
+        "content": "sdf",
+        "attachment": null,
+        "replyTo": null
+      },
+      {
+        "id": "msg_1785134999610_m1s1",
+        "channelId": "chn_announcements",
+        "timestamp": "2026-07-27T06:49:59.610Z",
+        "reactions": {},
+        "pinned": false,
+        "authorId": "usr_owner",
+        "content": "sd",
+        "attachment": null,
+        "replyTo": null
+      },
+      {
+        "id": "msg_1785134999774_p5ac",
+        "channelId": "chn_announcements",
+        "timestamp": "2026-07-27T06:49:59.774Z",
+        "reactions": {},
+        "pinned": false,
+        "authorId": "usr_owner",
+        "content": "fsd",
+        "attachment": null,
+        "replyTo": null
+      },
+      {
+        "id": "msg_1785134999934_7pue",
+        "channelId": "chn_announcements",
+        "timestamp": "2026-07-27T06:49:59.934Z",
+        "reactions": {},
+        "pinned": false,
+        "authorId": "usr_owner",
+        "content": "fsd",
+        "attachment": null,
+        "replyTo": null
+      },
+      {
+        "id": "msg_1785135000077_kwri",
+        "channelId": "chn_announcements",
+        "timestamp": "2026-07-27T06:50:00.077Z",
+        "reactions": {},
+        "pinned": false,
+        "authorId": "usr_owner",
+        "content": "f",
+        "attachment": null,
+        "replyTo": null
+      }
+    ],
+    "chn_general": [
+      {
+        "id": "msg_gen_1",
+        "channelId": "chn_general",
+        "authorId": "usr_owner",
+        "content": "Hey everyone! Welcome to our local Harmony node. How is the audio quality on the local WebRTC voice channel?",
+        "timestamp": "2026-07-27T06:15:51.917Z",
+        "reactions": {
+          "👍": [
+            "usr_elena",
+            "usr_marcus"
+          ]
+        }
+      },
+      {
+        "id": "msg_gen_2",
+        "channelId": "chn_general",
+        "authorId": "usr_elena",
+        "content": "The voice quality is crystal clear! Also loving the dark glassmorphism aesthetic. Feels just like Discord but completely under our control. 🎨",
+        "timestamp": "2026-07-27T06:25:51.917Z",
+        "reactions": {
+          "🔥": [
+            "usr_owner"
+          ]
+        },
+        "replyTo": {
+          "id": "msg_gen_1",
+          "authorName": "Alex (Host)",
+          "content": "Hey everyone! Welcome to our local Harmony node..."
+        }
+      },
+      {
+        "id": "msg_gen_3",
+        "channelId": "chn_general",
+        "authorId": "usr_marcus",
+        "content": "I created a second server for LAN Gaming! Anyone up for testing screen share in the Screen Share voice channel?",
+        "timestamp": "2026-07-27T06:35:51.917Z",
+        "reactions": {
+          "🎮": [
+            "usr_owner",
+            "usr_synth"
+          ]
+        }
+      }
+    ],
+    "chn_dev": [
+      {
+        "id": "msg_dev_1",
+        "channelId": "chn_dev",
+        "authorId": "usr_owner",
+        "content": "```javascript\n// WebRTC PeerConnection setup snippet\nconst peer = new RTCPeerConnection({\n  iceServers: [{ urls: \"stun:stun.l.google.com:19302\" }]\n});\nconsole.log(\"Connected locally via Socket.io signaling!\");\n```",
+        "timestamp": "2026-07-27T06:05:51.917Z",
+        "reactions": {
+          "💻": [
+            "usr_synth"
+          ]
+        }
+      }
+    ]
+  },
+  "directMessages": {
+    "usr_owner_usr_elena": [
+      {
+        "id": "dm_1",
+        "senderId": "usr_elena",
+        "receiverId": "usr_owner",
+        "content": "Hey Alex! Just sent over the new icon designs for the server categories.",
+        "timestamp": "2026-07-27T06:37:31.917Z"
+      }
+    ]
+  },
+  "friends": [
+    {
+      "userId": "usr_owner",
+      "friendId": "usr_elena",
+      "status": "accepted"
+    },
+    {
+      "userId": "usr_owner",
+      "friendId": "usr_marcus",
+      "status": "accepted"
+    },
+    {
+      "userId": "usr_owner",
+      "friendId": "usr_synth",
+      "status": "accepted"
+    }
+  ]
+}
