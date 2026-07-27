@@ -7,9 +7,26 @@
 
 ---
 
+## 🛠️ Windows Installer & Uninstaller Specifications
+
+The Windows setup installer (`Project Panda Setup.exe`) is powered by NSIS:
+
+- **Installer File**: `Project Panda Setup.exe` (103 MB)
+- **Installer Features**:
+  - Custom installation directory picker (`allowToChangeInstallationDirectory: true`).
+  - Automatic Desktop shortcut creation.
+  - Automatic Start Menu shortcut creation.
+- **Uninstaller Features**:
+  - Automatically registers **Project Panda** in Windows **Settings ➔ Apps ➔ Installed Apps** (Add or Remove Programs).
+  - Generates `Uninstall Project Panda.exe` inside the installation folder.
+  - Removes desktop shortcuts, registry entries, and program files cleanly on uninstall.
+
+---
+
 ## 🛠️ Technology Stack
 
 - **Desktop Framework**: Electron (`electron`)
+- **Installer Generator**: NSIS via `electron-builder`
 - **Frontend Framework**: React 19 + Vite 8
 - **UI Aesthetics**: Project Panda Holographic Glassmorphism CSS system (Obsidian `#06080D`, Neon Cyan `#00F2FE`, Electric Violet `#7F00FF`, Emerald `#00FF87`)
 - **Icons**: Lucide React (`lucide-react`)
