@@ -13,25 +13,25 @@ function startBackendServer() {
   });
 
   serverProcess.stdout?.on('data', (data) => {
-    console.log(`[Aether Backend]: ${data.toString().trim()}`);
+    console.log(`[Project Panda Backend]: ${data.toString().trim()}`);
   });
 
   serverProcess.stderr?.on('data', (data) => {
-    console.error(`[Aether Backend Error]: ${data.toString().trim()}`);
+    console.error(`[Project Panda Backend Error]: ${data.toString().trim()}`);
   });
 }
 
 function loadContent(win) {
   const tryLoad = async () => {
     try {
-      // First try Vite dev server if running
+      // First try Vite dev server if running during development
       await win.loadURL('http://localhost:5173');
     } catch (e1) {
       try {
-        // Fallback to Express backend server
+        // Fallback to local Express backend server
         await win.loadURL('http://localhost:3001');
       } catch (e2) {
-        // Fallback to compiled dist index.html file
+        // Fallback to bundled dist index.html
         const distFile = path.join(__dirname, '..', 'dist', 'index.html');
         if (fs.existsSync(distFile)) {
           win.loadFile(distFile);
@@ -51,8 +51,8 @@ function createWindow() {
     height: 880,
     minWidth: 960,
     minHeight: 640,
-    frame: false,
-    backgroundColor: '#06080D',
+    frame: false, // Frameless native Windows desktop shell
+    backgroundColor: '#090C15',
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -94,7 +94,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   startBackendServer();
-  setTimeout(createWindow, 400);
+  setTimeout(createWindow, 300);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
