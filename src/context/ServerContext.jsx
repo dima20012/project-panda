@@ -24,10 +24,16 @@ export const ServerProvider = ({ children }) => {
       setServers(data.servers || []);
 
       if (data.servers && data.servers.length > 0) {
-        const firstServer = data.servers[0];
-        setActiveServerId(firstServer.id);
-        if (firstServer.categories && firstServer.categories[0]?.channels[0]) {
-          setActiveChannelId(firstServer.categories[0].channels[0].id);
+        const savedServerId = localStorage.getItem('panda_active_server_id');
+        const savedChannelId = localStorage.getItem('panda_active_channel_id');
+
+        const foundServer = data.servers.find(s => s.id === savedServerId) || data.servers[0];
+        setActiveServerId(prev => prev || savedServerId || foundServer.id);
+
+        const allChannels = foundServer.categories?.flatMap(c => c.channels) || [];
+        const foundChannel = allChannels.find(ch => ch.id === savedChannelId) || allChannels[0];
+        if (foundChannel) {
+          setActiveChannelId(prev => prev || savedChannelId || foundChannel.id);
         }
       }
     } catch (err) {
@@ -38,6 +44,14 @@ export const ServerProvider = ({ children }) => {
   useEffect(() => {
     fetchServers();
   }, []);
+
+  useEffect(() => {
+    if (activeServerId) localStorage.setItem('panda_active_server_id', activeServerId);
+  }, [activeServerId]);
+
+  useEffect(() => {
+    if (activeChannelId) localStorage.setItem('panda_active_channel_id', activeChannelId);
+  }, [activeChannelId]);
 
   // Fetch messages when active channel changes
   const fetchMessages = useCallback(async (channelId) => {

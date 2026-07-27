@@ -5,14 +5,15 @@
       "username": "Alex_Dev",
       "displayName": "Alex (Host)",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      "status": "online",
+      "status": "offline",
       "customStatus": "🚀 Hosting Harmony Server locally",
       "bannerColor": "#5865F2",
       "roles": [
         "Admin",
         "Developer"
       ],
-      "createdAt": "2026-07-27T06:45:51.917Z"
+      "createdAt": "2026-07-27T06:45:51.917Z",
+      "bio": ""
     },
     {
       "id": "usr_synth",

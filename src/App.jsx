@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import { ServerProvider, useServer } from './context/ServerContext';
 import { VoiceProvider, useVoice } from './context/VoiceContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
 import { WindowsTitlebar } from './components/win/WindowsTitlebar';
 import { ServersBar } from './components/sidebar/ServersBar';
@@ -18,10 +20,11 @@ import { AddServerModal } from './components/modals/AddServerModal';
 import { CreateChannelModal } from './components/modals/CreateChannelModal';
 import { InviteModal } from './components/modals/InviteModal';
 import { UserSettingsModal } from './components/modals/UserSettingsModal';
+import { SearchModal } from './components/modals/SearchModal';
 
 const HarmonyAppContent = () => {
-  const { activeServerId, activeChannel } = useServer();
-  const { activeVoiceChannelId } = useVoice();
+  const { activeServerId, activeChannel, channels, selectChannel } = useServer();
+  const { activeVoiceChannelId, isMuted, setIsMuted } = useVoice();
   const { loading } = useAuth();
 
   const [showMembers, setShowMembers] = useState(true);
@@ -32,6 +35,34 @@ const HarmonyAppContent = () => {
   const [createCategoryTarget, setCreateCategoryTarget] = useState(null);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+
+  // Global Keyboard Shortcuts
+  useKeyboardShortcuts({
+    onToggleSearch: () => setShowSearchModal(prev => !prev),
+    onCloseModals: () => {
+      setShowSearchModal(false);
+      setShowSettingsModal(false);
+      setShowInviteModal(false);
+      setShowAddServerModal(false);
+      setCreateCategoryTarget(null);
+    },
+    onPrevChannel: () => {
+      if (!channels || channels.length === 0) return;
+      const currentIdx = channels.findIndex(c => c.id === activeChannel?.id);
+      const prevIdx = (currentIdx - 1 + channels.length) % channels.length;
+      selectChannel(channels[prevIdx]);
+    },
+    onNextChannel: () => {
+      if (!channels || channels.length === 0) return;
+      const currentIdx = channels.findIndex(c => c.id === activeChannel?.id);
+      const nextIdx = (currentIdx + 1) % channels.length;
+      selectChannel(channels[nextIdx]);
+    },
+    onToggleVoiceMute: () => {
+      setIsMuted(prev => !prev);
+    }
+  });
 
   if (loading) {
     return (
@@ -47,13 +78,13 @@ const HarmonyAppContent = () => {
         fontSize: '22px',
         fontWeight: '800'
       }}>
-        <div style={{ marginBottom: '12px', fontSize: '36px' }}>⚡</div>
-        Initializing Aether Windows Node...
+        <div style={{ marginBottom: '12px', fontSize: '36px' }}>🐼</div>
+        Initializing Project Panda Windows Node...
       </div>
     );
   }
 
-  const isVoiceActiveChannel = activeChannel?.type === 'voice' || activeVoiceChannelId === activeChannel?.id;
+  const isVoiceActiveChannel = Boolean(activeVoiceChannelId && activeChannel?.id === activeVoiceChannelId);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', overflow: 'hidden' }}>
@@ -81,6 +112,7 @@ const HarmonyAppContent = () => {
             <ChatHeader 
               onToggleMembers={() => setShowMembers(!showMembers)}
               showMembers={showMembers}
+              onOpenSearch={() => setShowSearchModal(true)}
             />
 
             <MessageFeed onSetReply={setReplyTo} />
@@ -117,6 +149,10 @@ const HarmonyAppContent = () => {
         {showSettingsModal && (
           <UserSettingsModal onClose={() => setShowSettingsModal(false)} />
         )}
+
+        {showSearchModal && (
+          <SearchModal onClose={() => setShowSearchModal(false)} />
+        )}
       </div>
     </div>
   );
@@ -124,14 +160,16 @@ const HarmonyAppContent = () => {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <ServerProvider>
-          <VoiceProvider>
-            <HarmonyAppContent />
-          </VoiceProvider>
-        </ServerProvider>
-      </SocketProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SocketProvider>
+          <ServerProvider>
+            <VoiceProvider>
+              <HarmonyAppContent />
+            </VoiceProvider>
+          </ServerProvider>
+        </SocketProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

@@ -58,6 +58,11 @@ body {
 }
 
 /* Scrollbars */
+.spoiler-text.revealed {
+  filter: none !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -668,6 +673,9 @@ body {
   gap: 16px;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
+  min-height: 0;
+  max-height: 100%;
 }
 
 .video-card {
@@ -676,7 +684,10 @@ body {
   border-radius: var(--radius-md);
   overflow: hidden;
   height: 100%;
-  min-height: 220px;
+  min-height: 200px;
+  max-height: 380px;
+  aspect-ratio: 16 / 9;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;

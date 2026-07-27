@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Mic, MicOff, Video, VideoOff, Monitor, PhoneOff, Headphones } from 'lucide-react';
 import { useVoice } from '../../context/VoiceContext';
 import { useAuth } from '../../context/AuthContext';
+import { ScreenShareModal } from '../modals/ScreenShareModal';
 
 const VideoElement = ({ stream, isLocal = false }) => {
   const videoRef = useRef(null);
@@ -26,12 +27,23 @@ const VideoElement = ({ stream, isLocal = false }) => {
 export const VoiceGrid = () => {
   const { 
     activeVoiceChannelName, leaveVoiceChannel, isMuted, toggleMute, 
-    isDeafened, toggleDeafen, isCamOn, toggleCamera, isScreenSharing, toggleScreenShare,
+    isDeafened, toggleDeafen, isCamOn, toggleCamera, isScreenSharing, 
+    startScreenShareWithSourceId, stopScreenShare,
     peersMap, localStream
   } = useVoice();
   const { currentUser } = useAuth();
 
+  const [showScreenShareModal, setShowScreenShareModal] = useState(false);
+
   const peersList = Object.values(peersMap);
+
+  const handleScreenShareClick = () => {
+    if (isScreenSharing) {
+      stopScreenShare();
+    } else {
+      setShowScreenShareModal(true);
+    }
+  };
 
   return (
     <div className="voice-grid-container">
@@ -98,7 +110,8 @@ export const VoiceGrid = () => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '16px',
-        boxShadow: 'var(--shadow-main)'
+        boxShadow: 'var(--shadow-main)',
+        flexShrink: 0
       }}>
         <button 
           className={`btn ${isMuted ? 'btn-danger' : 'btn-secondary'}`}
@@ -129,7 +142,7 @@ export const VoiceGrid = () => {
 
         <button 
           className={`btn ${isScreenSharing ? 'btn-primary' : 'btn-secondary'}`}
-          onClick={toggleScreenShare}
+          onClick={handleScreenShareClick}
           style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
         >
           <Monitor size={18} />
@@ -145,6 +158,13 @@ export const VoiceGrid = () => {
           <span>Disconnect</span>
         </button>
       </div>
+
+      {showScreenShareModal && (
+        <ScreenShareModal 
+          onClose={() => setShowScreenShareModal(false)}
+          onSelectSource={(sourceId) => startScreenShareWithSourceId(sourceId)}
+        />
+      )}
     </div>
   );
 };

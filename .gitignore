@@ -16,6 +16,9 @@ data/*.json
 uploads/*
 !uploads/.gitkeep
 
+# Executables
+*.exe
+
 # System & IDE
 .DS_Store
 .vscode/*

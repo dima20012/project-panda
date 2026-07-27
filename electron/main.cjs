@@ -21,28 +21,47 @@ function startBackendServer() {
   });
 }
 
-function loadContent(win) {
-  const tryLoad = async () => {
-    try {
-      // First try Vite dev server if running during development
-      await win.loadURL('http://localhost:5173');
-    } catch (e1) {
-      try {
-        // Fallback to local Express backend server
-        await win.loadURL('http://localhost:3001');
-      } catch (e2) {
-        // Fallback to bundled dist index.html
-        const distFile = path.join(__dirname, '..', 'dist', 'index.html');
-        if (fs.existsSync(distFile)) {
-          win.loadFile(distFile);
-        } else {
-          setTimeout(tryLoad, 1000);
-        }
-      }
-    }
-  };
+function checkServerAvailable(url) {
+  return new Promise((resolve) => {
+    const http = require('http');
+    const req = http.get(url, (res) => {
+      resolve(true);
+    });
+    req.on('error', () => resolve(false));
+    req.setTimeout(500, () => {
+      req.destroy();
+      resolve(false);
+    });
+  });
+}
 
-  tryLoad();
+async function loadContent(win) {
+  // 1. Check if Vite dev server is active on 5173
+  const isViteRunning = await checkServerAvailable('http://localhost:5173');
+  if (isViteRunning) {
+    console.log('[Project Panda Main]: Connecting to Vite dev server at http://localhost:5173');
+    await win.loadURL('http://localhost:5173');
+    return;
+  }
+
+  // 2. Fallback to production bundled dist/index.html
+  const distFile = path.join(__dirname, '..', 'dist', 'index.html');
+  if (fs.existsSync(distFile)) {
+    console.log('[Project Panda Main]: Loading built app from dist/index.html');
+    await win.loadFile(distFile);
+    return;
+  }
+
+  // 3. Fallback to Express backend server on 3001
+  const isExpressRunning = await checkServerAvailable('http://localhost:3001');
+  if (isExpressRunning) {
+    console.log('[Project Panda Main]: Loading from Express backend at http://localhost:3001');
+    await win.loadURL('http://localhost:3001');
+    return;
+  }
+
+  // If backend is still spawning, retry in 300ms
+  setTimeout(() => loadContent(win), 300);
 }
 
 function createWindow() {
@@ -65,11 +84,6 @@ function createWindow() {
     console.error('Electron webContents crashed:', e);
   });
 
-  mainWindow.webContents.on('did-fail-load', (e, errorCode, errorDescription) => {
-    console.log('did-fail-load:', errorCode, errorDescription);
-    setTimeout(() => loadContent(mainWindow), 1000);
-  });
-
   loadContent(mainWindow);
 
   ipcMain.on('window-minimize', () => mainWindow?.minimize());
@@ -81,6 +95,19 @@ function createWindow() {
     }
   });
   ipcMain.on('window-close', () => mainWindow?.close());
+
+  ipcMain.on('flash-window', () => {
+    if (mainWindow && !mainWindow.isFocused()) {
+      mainWindow.flashFrame(true);
+    }
+  });
+
+  ipcMain.on('show-notification', (event, { title, body }) => {
+    const { Notification } = require('electron');
+    if (Notification.isSupported()) {
+      new Notification({ title: title || 'Project Panda', body }).show();
+    }
+  });
 
   ipcMain.handle('get-desktop-sources', async () => {
     const sources = await desktopCapturer.getSources({ types: ['window', 'screen'] });

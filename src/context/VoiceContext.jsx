@@ -23,13 +23,72 @@ export const VoiceProvider = ({ children }) => {
   const [isCamOn, setIsCamOn] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   
-  // Peer Connections map: socketId -> { peerConnection, stream, user, isMuted, isDeafened, isCamOn, isScreenSharing }
+  // Devices state
+  const [audioInputDevices, setAudioInputDevices] = useState([]);
+  const [audioOutputDevices, setAudioOutputDevices] = useState([]);
+  const [videoInputDevices, setVideoInputDevices] = useState([]);
+
+  const [selectedAudioInput, setSelectedAudioInput] = useState(() => localStorage.getItem('panda_audio_input') || 'default');
+  const [selectedAudioOutput, setSelectedAudioOutput] = useState(() => localStorage.getItem('panda_audio_output') || 'default');
+  const [selectedVideoInput, setSelectedVideoInput] = useState(() => localStorage.getItem('panda_video_input') || 'default');
+
+  // WebRTC Audio Constraints
+  const [noiseSuppression, setNoiseSuppression] = useState(() => localStorage.getItem('panda_noise_suppression') !== 'false');
+  const [echoCancellation, setEchoCancellation] = useState(() => localStorage.getItem('panda_echo_cancellation') !== 'false');
+  const [autoGainControl, setAutoGainControl] = useState(() => localStorage.getItem('panda_auto_gain') !== 'false');
+
+  // Peer Connections map: socketId -> { pc, stream, user, isMuted, isDeafened, isCamOn, isScreenSharing }
   const [peersMap, setPeersMap] = useState({});
   const peersRef = useRef({});
   const localStreamRef = useRef(null);
 
   // Active channel voice member counters: channelId -> Array of members
   const [channelVoiceMembers, setChannelVoiceMembers] = useState({});
+
+  // Enumerate hardware devices
+  const refreshDevices = async () => {
+    try {
+      if (!navigator.mediaDevices?.enumerateDevices) return;
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      setAudioInputDevices(devices.filter(d => d.kind === 'audioinput'));
+      setAudioOutputDevices(devices.filter(d => d.kind === 'audiooutput'));
+      setVideoInputDevices(devices.filter(d => d.kind === 'videoinput'));
+    } catch (err) {
+      console.error('Error enumerating audio/video devices:', err);
+    }
+  };
+
+  useEffect(() => {
+    refreshDevices();
+    if (navigator.mediaDevices) {
+      navigator.mediaDevices.addEventListener('devicechange', refreshDevices);
+      return () => navigator.mediaDevices.removeEventListener('devicechange', refreshDevices);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('panda_audio_input', selectedAudioInput);
+  }, [selectedAudioInput]);
+
+  useEffect(() => {
+    localStorage.setItem('panda_audio_output', selectedAudioOutput);
+  }, [selectedAudioOutput]);
+
+  useEffect(() => {
+    localStorage.setItem('panda_video_input', selectedVideoInput);
+  }, [selectedVideoInput]);
+
+  useEffect(() => {
+    localStorage.setItem('panda_noise_suppression', noiseSuppression);
+  }, [noiseSuppression]);
+
+  useEffect(() => {
+    localStorage.setItem('panda_echo_cancellation', echoCancellation);
+  }, [echoCancellation]);
+
+  useEffect(() => {
+    localStorage.setItem('panda_auto_gain', autoGainControl);
+  }, [autoGainControl]);
 
   // Socket WebRTC signaling listeners
   useEffect(() => {
@@ -43,19 +102,16 @@ export const VoiceProvider = ({ children }) => {
     });
 
     socket.on('voice-room-users', async ({ channelId, peers }) => {
-      console.log('Joined voice channel, existing peers:', peers);
       for (const peerInfo of peers) {
         await createPeerConnection(peerInfo.socketId, peerInfo.user, true);
       }
     });
 
     socket.on('voice-peer-joined', async (member) => {
-      console.log('Voice peer joined:', member);
       await createPeerConnection(member.socketId, member.user, false);
     });
 
     socket.on('voice-peer-left', ({ socketId }) => {
-      console.log('Voice peer left:', socketId);
       removePeerConnection(socketId);
     });
 
@@ -118,16 +174,28 @@ export const VoiceProvider = ({ children }) => {
   const getOrCreateLocalStream = async (video = false) => {
     try {
       if (!localStreamRef.current) {
+        const audioConstraints = {
+          deviceId: selectedAudioInput !== 'default' ? { exact: selectedAudioInput } : undefined,
+          noiseSuppression,
+          echoCancellation,
+          autoGainControl
+        };
+
+        const videoConstraints = video ? {
+          deviceId: selectedVideoInput !== 'default' ? { exact: selectedVideoInput } : undefined,
+          width: 1280,
+          height: 720
+        } : false;
+
         const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: video ? { width: 1280, height: 720 } : false
+          audio: audioConstraints,
+          video: videoConstraints
         });
         localStreamRef.current = stream;
       }
       return localStreamRef.current;
     } catch (err) {
-      console.warn('Microphone/Camera access not granted or unavailable:', err.message);
-      // Create empty synthetic audio stream for fallback
+      console.warn('Microphone/Camera access fallback:', err.message);
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = ctx.createOscillator();
       const dst = ctx.createMediaStreamDestination();
@@ -204,7 +272,7 @@ export const VoiceProvider = ({ children }) => {
 
     setActiveVoiceChannelId(channelId);
     setActiveVoiceChannelName(channelName);
-    soundFx.playJoinVoice();
+    soundFx.playJoinVoiceSound();
 
     await getOrCreateLocalStream();
 
@@ -221,15 +289,12 @@ export const VoiceProvider = ({ children }) => {
   };
 
   const leaveVoiceChannel = () => {
-    if (!activeVoiceChannelId) return;
-
-    soundFx.playLeaveVoice();
+    soundFx.playMuteSound();
 
     if (socket) {
       socket.emit('voice-leave');
     }
 
-    // Close all peer connections
     Object.keys(peersRef.current).forEach(targetSocketId => {
       peersRef.current[targetSocketId].pc.close();
     });
@@ -250,8 +315,8 @@ export const VoiceProvider = ({ children }) => {
   const toggleMute = () => {
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
-    if (nextMuted) soundFx.playMute();
-    else soundFx.playUnmute();
+    if (nextMuted) soundFx.playMuteSound();
+    else soundFx.playJoinVoiceSound();
 
     if (localStreamRef.current) {
       localStreamRef.current.getAudioTracks().forEach(t => { t.enabled = !nextMuted; });
@@ -268,8 +333,8 @@ export const VoiceProvider = ({ children }) => {
   const toggleDeafen = () => {
     const nextDeaf = !isDeafened;
     setIsDeafened(nextDeaf);
-    if (nextDeaf) soundFx.playMute();
-    else soundFx.playUnmute();
+    if (nextDeaf) soundFx.playMuteSound();
+    else soundFx.playJoinVoiceSound();
 
     if (socket && activeVoiceChannelId) {
       socket.emit('voice-state-update', {
@@ -285,7 +350,9 @@ export const VoiceProvider = ({ children }) => {
       setIsCamOn(nextCam);
 
       if (nextCam) {
-        const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const videoStream = await navigator.mediaDevices.getUserMedia({
+          video: selectedVideoInput !== 'default' ? { deviceId: { exact: selectedVideoInput } } : true
+        });
         const videoTrack = videoStream.getVideoTracks()[0];
         if (localStreamRef.current) {
           localStreamRef.current.addTrack(videoTrack);
@@ -308,37 +375,66 @@ export const VoiceProvider = ({ children }) => {
     }
   };
 
-  const toggleScreenShare = async () => {
+  const startScreenShareWithSourceId = async (sourceId) => {
     try {
-      const nextShare = !isScreenSharing;
-      if (nextShare) {
-        const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
-        const screenTrack = screenStream.getVideoTracks()[0];
-
-        screenTrack.onended = () => {
-          setIsScreenSharing(false);
-          if (socket && activeVoiceChannelId) {
-            socket.emit('voice-state-update', { voiceChannelId: activeVoiceChannelId, isScreenSharing: false });
+      let screenStream;
+      if (sourceId) {
+        screenStream = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: {
+            mandatory: {
+              chromeMediaSource: 'desktop',
+              chromeMediaSourceId: sourceId,
+              minWidth: 1280,
+              maxWidth: 1920,
+              minHeight: 720,
+              maxHeight: 1080
+            }
           }
-        };
-
-        if (localStreamRef.current) {
-          localStreamRef.current.addTrack(screenTrack);
-        }
-        setIsScreenSharing(true);
+        });
       } else {
-        setIsScreenSharing(false);
+        screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
       }
+
+      const screenTrack = screenStream.getVideoTracks()[0];
+      screenTrack.onended = () => {
+        setIsScreenSharing(false);
+        if (socket && activeVoiceChannelId) {
+          socket.emit('voice-state-update', { voiceChannelId: activeVoiceChannelId, isScreenSharing: false });
+        }
+      };
+
+      if (localStreamRef.current) {
+        localStreamRef.current.addTrack(screenTrack);
+      }
+      setIsScreenSharing(true);
 
       if (socket && activeVoiceChannelId) {
         socket.emit('voice-state-update', {
           voiceChannelId: activeVoiceChannelId,
-          isScreenSharing: !isScreenSharing
+          isScreenSharing: true
         });
       }
     } catch (err) {
-      console.error('Screen sharing error:', err);
+      console.error('Screen sharing start error:', err);
       setIsScreenSharing(false);
+    }
+  };
+
+  const stopScreenShare = () => {
+    if (localStreamRef.current) {
+      localStreamRef.current.getVideoTracks().forEach(t => {
+        if (t.label?.toLowerCase().includes('screen') || t.label?.toLowerCase().includes('display')) {
+          t.stop();
+        }
+      });
+    }
+    setIsScreenSharing(false);
+    if (socket && activeVoiceChannelId) {
+      socket.emit('voice-state-update', {
+        voiceChannelId: activeVoiceChannelId,
+        isScreenSharing: false
+      });
     }
   };
 
@@ -349,16 +445,35 @@ export const VoiceProvider = ({ children }) => {
       joinVoiceChannel,
       leaveVoiceChannel,
       isMuted,
+      setIsMuted,
       toggleMute,
       isDeafened,
       toggleDeafen,
       isCamOn,
       toggleCamera,
       isScreenSharing,
-      toggleScreenShare,
+      startScreenShareWithSourceId,
+      stopScreenShare,
       peersMap,
       channelVoiceMembers,
-      localStream: localStreamRef.current
+      localStream: localStreamRef.current,
+      // Hardware device controls
+      audioInputDevices,
+      audioOutputDevices,
+      videoInputDevices,
+      selectedAudioInput,
+      setSelectedAudioInput,
+      selectedAudioOutput,
+      setSelectedAudioOutput,
+      selectedVideoInput,
+      setSelectedVideoInput,
+      noiseSuppression,
+      setNoiseSuppression,
+      echoCancellation,
+      setEchoCancellation,
+      autoGainControl,
+      setAutoGainControl,
+      refreshDevices
     }}>
       {children}
     </VoiceContext.Provider>
