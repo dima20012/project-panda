@@ -6,6 +6,15 @@
 
 ---
 
+## 📦 Windows Setup Installer
+
+The project includes a standalone Windows Installer Setup file (`Project Panda Setup.exe`):
+
+- **Location**: `C:\ProjectDC\Project Panda Setup.exe` (or `C:\ProjectDC\release\Project Panda Setup 1.0.0.exe`)
+- **What it does**: Double-clicking `Project Panda Setup.exe` opens the Windows Installation Wizard, installs the application onto your system, and places shortcuts on your **Desktop** and **Start Menu**.
+
+---
+
 ## 🎨 Fresh New Futuristic Aesthetics
 
 Unlike generic chat apps, Project Panda features a distinct, ultra-modern Windows desktop UI:
@@ -16,48 +25,26 @@ Unlike generic chat apps, Project Panda features a distinct, ultra-modern Window
 
 ---
 
-## 💻 Native Windows Desktop Application
-
-Project Panda is packaged as a native **Windows Desktop Application** powered by **Electron**:
-- **Automated Failover Loader**: Automatically loads Vite dev server (`http://localhost:5173`), Express backend (`http://localhost:3001`), or relative static distribution bundle (`dist/index.html`).
-- **Relative Asset Paths**: Built with `base: './'` in `vite.config.js` to ensure zero file path resolution issues on Windows local file systems.
-- **Windows Frameless Window Controls**: Native window management (Minimize, Maximize, Close).
-
----
-
 ## 🛠️ Quick Start
 
-### 1. Prerequisites & Clone
+### 1. Install via Windows Setup File
+Simply double-click `Project Panda Setup.exe` to install and launch Project Panda from your Windows Start Menu!
+
+### 2. Developer Launch Mode
 ```bash
 git clone https://github.com/dima20012/project-panda.git
 cd project-panda
 npm install
-```
-
-### 2. Launch Windows Desktop Application
-To launch the native Windows desktop app:
-```bash
 npm run app
 ```
-
-### 3. Launch Web Node Version
-If you prefer running in your browser:
-```bash
-npm start
-```
-- **Web App**: [http://localhost:5173](http://localhost:5173)
-- **Node Server**: [http://localhost:3001](http://localhost:3001)
 
 ---
 
 ## ⚙️ Available Scripts
 
-- `npm run app` - Launches Vite dev server, Express backend, and the Windows Desktop Electron Application.
-- `npm run electron` - Launches Electron desktop window directly.
-- `npm run dev` - Runs Vite frontend dev server.
-- `npm run server` - Runs Node backend server.
-- `npm run start` - Launches backend server and Vite dev server simultaneously for browser access.
-- `npm run build` - Compiles production-ready bundle.
+- `npm run app` - Launches the Windows Desktop Application locally.
+- `npm run dist` - Re-compiles the Windows Setup Installer executable in `./release`.
+- `npm run build` - Compiles production-ready frontend bundle.
 
 ---
 
