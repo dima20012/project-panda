@@ -2,14 +2,10 @@
 
 **Project Panda** is a next-generation Windows desktop application for self-hosted local communication, featuring a unique **Holographic Glassmorphic Sci-Fi Design System**, real-time text chat, high-fidelity WebRTC voice/video mesh, screen sharing, sci-fi theme customization, hardware device routing, and local persistent data storage with zero third-party telemetry.
 
+![Project Panda Interface](public/screenshots/app_main.png)
+
 - **GitHub Repository**: [https://github.com/dima20012/project-panda](https://github.com/dima20012/project-panda)
 - **Latest Windows Release (v1.1.0)**: [https://github.com/dima20012/project-panda/releases/tag/v1.1.0](https://github.com/dima20012/project-panda/releases/tag/v1.1.0)
-
----
-
-## 📸 Application Screenshot
-
-![Project Panda App Screenshot](public/screenshots/app_main.png)
 
 ---
 
