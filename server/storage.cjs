@@ -55,12 +55,12 @@ const INITIAL_DATA = {
   servers: [
     {
       id: 'srv_harmony',
-      name: 'Harmony HQ',
-      icon: '⚡',
-      iconBg: 'linear-gradient(135deg, #5865F2 0%, #7289DA 100%)',
-      description: 'The official local self-hosted hub for chat, voice, and video.',
+      name: 'Project Panda HQ 🐼',
+      icon: '🐼',
+      iconBg: 'linear-gradient(135deg, #00F2FE 0%, #7F00FF 100%)',
+      description: 'The official Project Panda local hub for chat, voice, and video.',
       ownerId: 'usr_owner',
-      inviteCode: 'HARMONY-LOCAL-2026',
+      inviteCode: 'PANDA-LOCAL-2026',
       categories: [
         {
           id: 'cat_welcome',

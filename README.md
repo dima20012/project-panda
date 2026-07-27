@@ -1,14 +1,14 @@
-# ⚡ Aether Node — Futuristic Windows Local Communication App
+# 🐼 Project Panda — Futuristic Windows Local Communication App
 
-**Aether Node** is a next-generation Windows desktop application for self-hosted local communication, featuring a unique **Holographic Glassmorphic Sci-Fi Design System**, real-time text chat, high-fidelity WebRTC voice/video mesh, screen sharing, and local persistent data storage with zero third-party telemetry.
+**Project Panda** is a next-generation Windows desktop application for self-hosted local communication, featuring a unique **Holographic Glassmorphic Sci-Fi Design System**, real-time text chat, high-fidelity WebRTC voice/video mesh, screen sharing, and local persistent data storage with zero third-party telemetry.
 
-- **GitHub Repository**: [https://github.com/dima20012/aether-node](https://github.com/dima20012/aether-node)
+- **GitHub Repository**: [https://github.com/dima20012/project-panda](https://github.com/dima20012/project-panda)
 
 ---
 
 ## 🎨 Fresh New Futuristic Aesthetics
 
-Unlike generic chat apps, Aether features a distinct, ultra-modern Windows desktop UI:
+Unlike generic chat apps, Project Panda features a distinct, ultra-modern Windows desktop UI:
 - **Obsidian & Cosmic Neon Glass**: Deep dark space backdrop with glowing neon cyan (`#00F2FE`), electric purple (`#7F00FF`), and emerald indicators.
 - **Custom Windows Frameless Titlebar**: Embedded acrylic titlebar with real-time local node ping meter, status indicator, and Windows window action buttons (`Minimize`, `Maximize`, `Close`).
 - **Cyber Hologram HUD**: Translucent glass sidebars, reactive active speaker indicators, floating modal cards, and custom scrollbars.
@@ -18,7 +18,7 @@ Unlike generic chat apps, Aether features a distinct, ultra-modern Windows deskt
 
 ## 💻 Native Windows Desktop Application
 
-Aether is packaged as a native **Windows Desktop Application** powered by **Electron**:
+Project Panda is packaged as a native **Windows Desktop Application** powered by **Electron**:
 - **Automated Failover Loader**: Automatically loads Vite dev server (`http://localhost:5173`), Express backend (`http://localhost:3001`), or relative static distribution bundle (`dist/index.html`).
 - **Relative Asset Paths**: Built with `base: './'` in `vite.config.js` to ensure zero file path resolution issues on Windows local file systems.
 - **Windows Frameless Window Controls**: Native window management (Minimize, Maximize, Close).
@@ -29,8 +29,8 @@ Aether is packaged as a native **Windows Desktop Application** powered by **Elec
 
 ### 1. Prerequisites & Clone
 ```bash
-git clone https://github.com/dima20012/aether-node.git
-cd aether-node
+git clone https://github.com/dima20012/project-panda.git
+cd project-panda
 npm install
 ```
 

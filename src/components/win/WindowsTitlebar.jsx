@@ -1,5 +1,5 @@
 import React from 'react';
-import { Minus, Square, X, Radio } from 'lucide-react';
+import { Minus, Square, X } from 'lucide-react';
 
 export const WindowsTitlebar = () => {
   const isElectron = !!window.electronAPI;
@@ -19,9 +19,9 @@ export const WindowsTitlebar = () => {
   return (
     <div className="win-titlebar">
       <div className="win-titlebar-title">
-        <Radio size={16} style={{ color: 'var(--neon-cyan)' }} />
-        <span>AETHER NODE</span>
-        <span className="win-node-badge">🟢 LOCAL NODE ACTIVE • 0.8ms LAN</span>
+        <span style={{ fontSize: '18px' }}>🐼</span>
+        <span style={{ fontWeight: '800', letterSpacing: '0.05em' }}>PROJECT PANDA</span>
+        <span className="win-node-badge">🟢 PANDA NODE ACTIVE • 0.8ms LAN</span>
       </div>
 
       {isElectron && (
