@@ -2,6 +2,8 @@
 
 **Aether Node** is a next-generation Windows desktop application for self-hosted local communication, featuring a unique **Holographic Glassmorphic Sci-Fi Design System**, real-time text chat, high-fidelity WebRTC voice/video mesh, screen sharing, and local persistent data storage with zero third-party telemetry.
 
+- **GitHub Repository**: [https://github.com/dima20012/aether-node](https://github.com/dima20012/aether-node)
+
 ---
 
 ## 🎨 Fresh New Futuristic Aesthetics
@@ -25,9 +27,12 @@ Aether is packaged as a native **Windows Desktop Application** powered by **Elec
 
 ## 🛠️ Quick Start
 
-### 1. Prerequisites
-- **Node.js** (v18 or higher)
-- **npm** (v9 or higher)
+### 1. Prerequisites & Clone
+```bash
+git clone https://github.com/dima20012/aether-node.git
+cd aether-node
+npm install
+```
 
 ### 2. Launch Windows Desktop Application
 To launch the native Windows desktop app:
