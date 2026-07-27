@@ -3,39 +3,25 @@
 **Project Panda** is a next-generation Windows desktop application for self-hosted local communication, featuring a unique **Holographic Glassmorphic Sci-Fi Design System**, real-time text chat, high-fidelity WebRTC voice/video mesh, screen sharing, and local persistent data storage with zero third-party telemetry.
 
 - **GitHub Repository**: [https://github.com/dima20012/project-panda](https://github.com/dima20012/project-panda)
+- **Latest Windows Release & Setup File**: [https://github.com/dima20012/project-panda/releases](https://github.com/dima20012/project-panda/releases)
 
 ---
 
-## 📦 Windows Setup Installer
+## 📦 Windows Setup Installer & GitHub Releases
 
-The project includes a standalone Windows Installer Setup file (`Project Panda Setup.exe`):
+Whenever a new version of Project Panda is compiled, the Windows Setup Installer (`Project Panda Setup.exe`) is automatically attached to the GitHub Release:
 
-- **Location**: `C:\ProjectDC\Project Panda Setup.exe` (or `C:\ProjectDC\release\Project Panda Setup 1.0.0.exe`)
-- **What it does**: Double-clicking `Project Panda Setup.exe` opens the Windows Installation Wizard, installs the application onto your system, and places shortcuts on your **Desktop** and **Start Menu**.
-
----
-
-## 🎨 Fresh New Futuristic Aesthetics
-
-Unlike generic chat apps, Project Panda features a distinct, ultra-modern Windows desktop UI:
-- **Obsidian & Cosmic Neon Glass**: Deep dark space backdrop with glowing neon cyan (`#00F2FE`), electric purple (`#7F00FF`), and emerald indicators.
-- **Custom Windows Frameless Titlebar**: Embedded acrylic titlebar with real-time local node ping meter, status indicator, and Windows window action buttons (`Minimize`, `Maximize`, `Close`).
-- **Cyber Hologram HUD**: Translucent glass sidebars, reactive active speaker indicators, floating modal cards, and custom scrollbars.
-- **Web Audio Synth FX**: Built-in Web Audio sound synthesizer for node join/leave, mic mute, and signal pings.
+- **Download Installer**: [Project Panda v1.0.0 Release](https://github.com/dima20012/project-panda/releases/tag/v1.0.0)
+- **Local File Path**: `C:\ProjectDC\release\Project Panda Setup 1.0.0.exe` (or `C:\ProjectDC\Project Panda Setup.exe`)
 
 ---
 
-## 🛠️ Quick Start
+## 🚀 Publishing New Releases
 
-### 1. Install via Windows Setup File
-Simply double-click `Project Panda Setup.exe` to install and launch Project Panda from your Windows Start Menu!
+To compile and upload a new version setup installer to GitHub Releases:
 
-### 2. Developer Launch Mode
 ```bash
-git clone https://github.com/dima20012/project-panda.git
-cd project-panda
-npm install
-npm run app
+npm run release -- v1.0.1 "release/Project Panda Setup 1.0.0.exe" --title "v1.0.1" --notes "Release notes"
 ```
 
 ---
@@ -44,6 +30,7 @@ npm run app
 
 - `npm run app` - Launches the Windows Desktop Application locally.
 - `npm run dist` - Re-compiles the Windows Setup Installer executable in `./release`.
+- `npm run release` - Compiles installer and creates a new published GitHub Release with attached `.exe` setup file.
 - `npm run build` - Compiles production-ready frontend bundle.
 
 ---
