@@ -1,7 +1,7 @@
 # 📋 Project Information — Project Panda 🐼
 
 ## 🎯 Overview
-**Project Panda** is a native Windows desktop communication app with a custom Holographic Sci-Fi Glassmorphism user interface. Built with Electron, React 19, Express, Socket.io, and WebRTC, it provides real-time chat, voice, video, screen sharing, sci-fi theme customization, hardware device selection, self-hosted node management, state persistence, and local data storage.
+**Project Panda** is a native Windows desktop communication app with a custom Holographic Sci-Fi Glassmorphism user interface. Built with Electron, React 19, Express, Socket.io, and WebRTC, it provides real-time chat, voice, video, screen sharing, sci-fi theme customization, hardware device selection, self-hosted node management, database backup/restore operations, state persistence, and local data storage.
 
 - **GitHub Repository**: [https://github.com/dima20012/project-panda](https://github.com/dima20012/project-panda)
 - **Continuous Development Plan**: [CONTINUOUS_DEV_PLAN.md](file:///C:/ProjectDC/CONTINUOUS_DEV_PLAN.md)
@@ -9,6 +9,20 @@
 ---
 
 ## ✨ Features & Capabilities
+
+### 💾 Server Database Backup & Restore Operations (`UserSettingsModal.jsx`)
+- **1-Click JSON Backup Export (`/api/server/backup`)**: Download complete database backup files containing servers, channels, users, and full chat history.
+- **Node Database Restore (`/api/server/restore`)**: Restore node database from JSON backup files with instant client re-initialization.
+
+### 💬 Rich Chat & Media Enhancements
+- **Message Pinning & Unpinning (`MessageFeed.jsx`)**: Hover over any message to pin or unpin announcements in real time across all connected clients.
+- **Drag & Drop Attachment Overlay (`ChatInput.jsx`)**: Drop files anywhere onto the chat input zone to attach images or media files instantly with a visual cyan glass overlay.
+- **Text Formatting Quick Toolbar (`ChatInput.jsx`)**: One-click quick toolbar for inserting Bold (`**text**`), Italic (`*text*`), Code (`` `text` ``), and Spoiler (`||text||`) Markdown formatting.
+- **Pinned Messages Drawer (`PinnedModal.jsx`)**: View all pinned channel announcements in a dedicated channel modal accessible from the chat header.
+- **Spoiler Blur Masks (`MarkdownText.jsx`)**: Wrap text in `||spoiler||` to render blurred text that reveals on click.
+- **Inline Audio & Video Players (`MessageFeed.jsx`)**: Native HTML5 `<audio>` and `<video>` players for mp3, wav, ogg, mp4, and webm file attachments.
+- **One-Click Chat Export (`ChatHeader.jsx`)**: Export entire channel conversation history into formatted `.md` (Markdown) files with a single click.
+- **Code Block Copy Button**: Quick code copy button with checkmark confirmation animation.
 
 ### 🎥 Native Desktop Screen Sharing & Voice Grid HUD
 - **Voice Activity Detection (VAD) & Speaking Indicator Rings (`VoiceGrid.jsx` & `VoiceContext.jsx`)**: Real-time microphone audio volume tracking that highlights active voice speakers with animated neon emerald glow rings.
@@ -23,15 +37,6 @@
 - **Node Connection Manager Modal (`ServerConnectionModal.jsx`)**: Accessible via the Globe button on the server sidebar for quick testing and server node switching.
 - **Standalone Dedicated Server Mode (`server/server.cjs`)**: Run standalone community nodes on LAN or cloud VPS instances via `npm run server:standalone` with configurable environment variables.
 
-### 💬 Rich Chat & Media Enhancements
-- **Drag & Drop Attachment Overlay (`ChatInput.jsx`)**: Drop files anywhere onto the chat input zone to attach images or media files instantly with a visual cyan glass overlay.
-- **Text Formatting Quick Toolbar (`ChatInput.jsx`)**: One-click quick toolbar for inserting Bold (`**text**`), Italic (`*text*`), Code (`` `text` ``), and Spoiler (`||text||`) Markdown formatting.
-- **Pinned Messages Drawer (`PinnedModal.jsx`)**: View all pinned channel announcements in a dedicated channel modal accessible from the chat header.
-- **Spoiler Blur Masks (`MarkdownText.jsx`)**: Wrap text in `||spoiler||` to render blurred text that reveals on click.
-- **Inline Audio & Video Players (`MessageFeed.jsx`)**: Native HTML5 `<audio>` and `<video>` players for mp3, wav, ogg, mp4, and webm file attachments.
-- **One-Click Chat Export (`ChatHeader.jsx`)**: Export entire channel conversation history into formatted `.md` (Markdown) files with a single click.
-- **Code Block Copy Button**: Quick code copy button with checkmark confirmation animation.
-
 ### 🎙️ Audio & Video Hardware Management (`VoiceContext.jsx` & `UserSettingsModal.jsx`)
 - **Microphone & Speaker Selection**: Dedicated dropdown selectors for input microphones and output speakers/headsets.
 - **Camera Device Routing**: Dropdown selection for connected webcam/video capture devices.
@@ -42,11 +47,12 @@
   - **Automatic Gain Control**: Normalize microphone gain dynamically.
 
 ### 👤 User Profile & Account Settings (`UserSettingsModal.jsx`)
-- **4 Tabbed Settings Sections**:
+- **5 Tabbed Settings Sections**:
   - **Profile & Identity**: Custom Display Name, Bio, Custom Status message, and Presence Indicator.
   - **UI & Aesthetics**: Sci-Fi theme presets, sliders, and compact chat mode toggle.
   - **Audio & Video**: Input/output device selectors, live camera test preview, and WebRTC audio processing toggles.
   - **Hotkeys**: Interactive keyboard shortcut cheat sheet.
+  - **Backup & Operations**: 1-Click JSON database backup export and node database restore.
 - **Sci-Fi Avatar Presets**: 6 built-in neon sci-fi avatar options plus custom avatar URL input.
 - **Presence Indicators**: 🟢 Online, 🟡 Idle, 🔴 Do Not Disturb, ⚪ Invisible.
 - **Multi-User Profile Switcher**: Built-in developer switcher for multi-account testing.

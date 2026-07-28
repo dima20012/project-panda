@@ -1,6 +1,6 @@
 # 🏗️ Technical Architecture — Project Panda 🐼
 
-This document details the architectural layout of the native Windows Electron Desktop application, Electron IPC bridge, real-time Socket.io events, WebRTC signaling protocol, hardware device management, layout rendering rules, distributed client-server architecture, design system, theme engine, state persistence, and Web Audio synthesis architecture.
+This document details the architectural layout of the native Windows Electron Desktop application, Electron IPC bridge, real-time Socket.io events, WebRTC signaling protocol, hardware device management, layout rendering rules, distributed client-server architecture, database operations, design system, theme engine, state persistence, and Web Audio synthesis architecture.
 
 ---
 
@@ -21,8 +21,15 @@ This document details the architectural layout of the native Windows Electron De
 │  │ Standalone / Embedded Node Server (Express + Socket.io + WebRTC Signaler) │  │
 │  │ Host: 0.0.0.0:3001 • Endpoint: /api/ping • Storage: data/db.json          │  │
 │  └───────────────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 💾 Database Operations & Backup/Restore Architecture (`/api/server/backup` & `/api/server/restore`)
+
+1. **1-Click JSON Database Export (`/api/server/backup`)**: Returns complete node state (`data/db.json`) containing servers, channels, users, and message history as a downloadable formatted JSON file (`panda_db_backup_{timestamp}.json`).
+2. **Database Import & Restore (`/api/server/restore`)**: Accepts JSON backup payloads, validates structure, replaces node state (`data/db.json`), broadcasts `server-created` / `channel-created` updates, and triggers clean client re-initialization.
 
 ---
 
@@ -150,6 +157,7 @@ Real-time audio feedback generated dynamically using browser native Web Audio AP
 
 ## 💬 Rich Chat & Media Pipeline
 
+- **Message Pinning & Unpinning (`MessageFeed.jsx` & `ServerContext.jsx`)**: Real-time pinning state toggle with visual pin badge and synchronization across connected clients.
 - **Drag & Drop Attachment Overlay (`ChatInput.jsx`)**: HTML5 Drag & Drop event handlers (`onDragOver`, `onDragLeave`, `onDrop`) triggering visual backdrop blur overlay and dispatching dropped files directly to `/api/upload`.
 - **Text Formatting Quick Toolbar (`ChatInput.jsx`)**: Quick action bar providing single-click inline Markdown insertion for **Bold** (`**`), *Italic* (`*`), `Inline Code` (`` ` ``), and ||Spoiler|| (`||`).
 - **Pinned Messages Drawer (`PinnedModal.jsx` & `ChatHeader.jsx`)**: Dedicated channel drawer modal triggered from `ChatHeader.jsx` that filters channel messages (`messages.filter(m => m.pinned)`) and renders pinned message cards with Markdown support.
