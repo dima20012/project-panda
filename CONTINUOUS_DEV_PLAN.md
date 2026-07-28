@@ -63,4 +63,4 @@
 
 | Date / Timestamp | Status | Completed Checkpoints | Next Immediate Task |
 |---|---|---|---|
-| 2026-07-28 12:42 | 🟢 PHASE 2.1 COMPLETED | Added live Node Health & Latency status badge (`🟢 Node Name • 12ms`) to `ChannelsSidebar.jsx` with automatic 15s background pinging. | Phase 3: WebRTC Audio Analyser Speaking Indicators. |
+| 2026-07-28 12:44 | 🟢 PHASE 3 COMPLETED | Integrated WebRTC Voice Activity Detection (VAD) and `voice-peer-state-changed` speaking indicators (`VoiceContext.jsx` & `VoiceGrid.jsx`). | Audit & Continuous Feature Refinements. |

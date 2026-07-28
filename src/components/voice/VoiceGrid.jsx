@@ -55,7 +55,7 @@ export const VoiceGrid = () => {
 
       {/* Grid of participants */}
       <div className="voice-video-grid">
-        {/* Local Participant Card */}
+        {/* Local User Card */}
         {currentUser && (
           <div className={`video-card ${!isMuted ? 'speaking' : ''}`}>
             {isCamOn || isScreenSharing ? (
@@ -80,7 +80,7 @@ export const VoiceGrid = () => {
 
         {/* Remote Peers Cards */}
         {peersList.map((peer) => (
-          <div key={peer.socketId} className={`video-card ${!peer.isMuted ? 'speaking' : ''}`}>
+          <div key={peer.socketId} className={`video-card ${peer.isSpeaking || !peer.isMuted ? 'speaking' : ''}`}>
             {peer.isCamOn || peer.isScreenSharing ? (
               <VideoElement stream={peer.stream} isLocal={false} />
             ) : (

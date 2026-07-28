@@ -143,7 +143,7 @@ export const VoiceProvider = ({ children }) => {
       }
     });
 
-    socket.on('voice-peer-state-changed', ({ socketId, isMuted, isDeafened, isCamOn, isScreenSharing }) => {
+    socket.on('voice-peer-state-changed', ({ socketId, isMuted, isDeafened, isCamOn, isScreenSharing, isSpeaking }) => {
       setPeersMap(prev => {
         if (!prev[socketId]) return prev;
         return {
@@ -153,7 +153,8 @@ export const VoiceProvider = ({ children }) => {
             isMuted,
             isDeafened,
             isCamOn,
-            isScreenSharing
+            isScreenSharing,
+            isSpeaking
           }
         };
       });
