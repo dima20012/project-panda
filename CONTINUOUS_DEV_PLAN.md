@@ -52,10 +52,26 @@
 
 ---
 
-### 🚀 Phase 4: Extended Continuous Features (Future Phases)
-- [ ] **4.1 TeamSpeak-style Whisper / Channel Broadcast**: Talk to specific users or broadcast across all channels simultaneously.
-- [ ] **4.2 Advanced Role-Based Access Control (RBAC)**: Admin, Moderator, Member, Guest permissions per server node.
-- [ ] **4.3 Automated Backup & Database Export**: One-click server data backup (`data/db.json` + `uploads/`) from server settings.
+### 🚀 Phase 4: Extended Continuous Features & Enterprise Improvements
+
+#### 1. 🎙️ Advanced Audio & Voice Mesh (TeamSpeak Power Features)
+- [ ] **4.1 3D Spatial Audio (`PannerNode`)**: Web Audio 3D spatial panning based on grid coordinate layout.
+- [ ] **4.2 TeamSpeak Whisper & Multi-Channel Broadcast**: Dedicated push-to-talk key to talk to targeted users or broadcast across all voice channels simultaneously.
+- [ ] **4.3 Integrated Soundboard Engine**: Local and server-side sound effect triggers for voice channel playback.
+
+#### 2. 🔐 Security & Access Control
+- [ ] **4.4 Role-Based Access Control (RBAC)**: Admin, Moderator, Member, Guest roles with granular channel permissions (View, Send, Manage, Kick/Mute).
+- [ ] **4.5 Server Join Passwords & Access Tokens**: Require authentication tokens for private community nodes.
+- [ ] **4.6 Server Audit Event Logs**: Event trail logging for administrative actions in `data/db.json`.
+
+#### 3. 💬 Rich Media & Messaging
+- [ ] **4.7 Emoji Message Reactions**: Interactive emoji picker per message with real-time socket count updates.
+- [ ] **4.8 Code Snippet Viewer**: Auto-syntax-highlighting code viewer for uploaded `.js`, `.py`, `.json` code attachments with copy/download buttons.
+- [ ] **4.9 Threaded Reply Drawers**: Nested discussion threads per message.
+
+#### 4. 🛠️ Operations & Windows Desktop Integration
+- [ ] **4.10 1-Click Server Backup & Restore**: Download/export entire server database (`data/db.json` + `uploads/`) as `.zip` archive.
+- [ ] **4.11 System Tray Minimization**: Minimize to Windows Notification Area (System Tray) with background voice listening.
 
 ---
 
