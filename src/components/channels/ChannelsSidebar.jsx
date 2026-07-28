@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Hash, Volume2, Plus, Mic, MicOff, Headphones, Settings, 
-  PhoneOff, Video, Monitor, ChevronDown, UserPlus 
+  PhoneOff, Video, Monitor, ChevronDown, UserPlus, Globe 
 } from 'lucide-react';
 import { useServer } from '../../context/ServerContext';
 import { useVoice } from '../../context/VoiceContext';
 import { useAuth } from '../../context/AuthContext';
+import { getServerUrl, pingServerNode } from '../../utils/apiConfig';
 
 export const ChannelsSidebar = ({ onOpenCreateChannel, onOpenSettings, onOpenInvite }) => {
   const { activeServer, activeChannelId, setActiveChannelId, activeServerId } = useServer();
@@ -15,6 +16,19 @@ export const ChannelsSidebar = ({ onOpenCreateChannel, onOpenSettings, onOpenInv
     channelVoiceMembers
   } = useVoice();
   const { currentUser } = useAuth();
+
+  const [nodePing, setNodePing] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const checkPing = async () => {
+      const res = await pingServerNode();
+      if (isMounted) setNodePing(res);
+    };
+    checkPing();
+    const interval = setInterval(checkPing, 15000);
+    return () => { isMounted = false; clearInterval(interval); };
+  }, []);
 
   const [expandedCategories, setExpandedCategories] = useState({
     cat_welcome: true,
@@ -44,20 +58,30 @@ export const ChannelsSidebar = ({ onOpenCreateChannel, onOpenSettings, onOpenInv
   return (
     <div className="channels-sidebar">
       {/* Server Header */}
-      <div className="server-header">
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {activeServer.name}
-        </span>
-        <div style={{ display: 'flex', gap: '4px' }}>
-          <button 
-            className="icon-btn" 
-            title="Invite Friends"
-            onClick={onOpenInvite}
-            style={{ width: '28px', height: '28px' }}
-          >
-            <UserPlus size={16} />
-          </button>
+      <div className="server-header" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '2px', padding: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: '800', fontSize: '15px' }}>
+            {activeServer.name}
+          </span>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button 
+              className="icon-btn" 
+              title="Invite Friends"
+              onClick={onOpenInvite}
+              style={{ width: '28px', height: '28px' }}
+            >
+              <UserPlus size={16} />
+            </button>
+          </div>
         </div>
+
+        {/* Server Node Live Ping Badge */}
+        {nodePing && nodePing.success && (
+          <div style={{ fontSize: '10px', color: 'var(--neon-emerald)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+            <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--neon-emerald)', boxShadow: '0 0 8px var(--neon-emerald-glow)' }}></span>
+            {nodePing.data.serverName} • {nodePing.latency}ms
+          </div>
+        )}
       </div>
 
       {/* Channel Categories & Channels */}

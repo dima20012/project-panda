@@ -63,4 +63,4 @@
 
 | Date / Timestamp | Status | Completed Checkpoints | Next Immediate Task |
 |---|---|---|---|
-| 2026-07-28 12:41 | 🟢 PHASE 1 COMPLETED | Refactored all contexts for dynamic `getServerUrl()`, created `ServerConnectionModal.jsx` with ping test & preset nodes, added `/api/ping` endpoint to `server.cjs`, added `npm run server:standalone`. | Phase 2: Remote media URL resolver & Server MOTD banner in `ChannelsSidebar.jsx`. |
+| 2026-07-28 12:42 | 🟢 PHASE 2.1 COMPLETED | Added live Node Health & Latency status badge (`🟢 Node Name • 12ms`) to `ChannelsSidebar.jsx` with automatic 15s background pinging. | Phase 3: WebRTC Audio Analyser Speaking Indicators. |
