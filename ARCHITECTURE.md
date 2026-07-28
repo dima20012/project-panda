@@ -39,7 +39,7 @@ This document details the architectural layout of the native Windows Electron De
 2. **Node Health & Latency Probe (`pingServerNode(targetUrl)`)**: Hits `/api/ping` via GET request to measure round-trip ping latency (ms) and verify:
    - `serverName`: Configurable node title (`SERVER_NAME`).
    - `motd`: Node welcome message (`SERVER_MOTD`).
-   - `version`: Node software version (`1.2.0`).
+   - `version`: Node software version (`1.3.0`).
    - `usersOnline`: Count of active connected Socket.io sockets.
 3. **Automatic 15s Background Polling (`ChannelsSidebar.jsx`)**: The sidebar header periodically executes `pingServerNode()` every 15 seconds to display a live health status badge (`🟢 Node Name • 12ms`) indicating node connectivity and round-trip ping times.
 4. **Node Connection Manager Modal (`ServerConnectionModal.jsx`)**: Accessible via Globe button in `ServersBar.jsx`. Provides connection testing, ping latency displays, preset switching (Local Embedded vs. LAN Node Host), and seamless client re-initialization.
