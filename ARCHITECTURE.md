@@ -4,24 +4,34 @@ This document details the architectural layout of the native Windows Electron De
 
 ---
 
-## 📐 Desktop Windows Application Architecture
+---
+
+## 🌐 Distributed Client-Server Ecosystem (`apiConfig.js` & `ServerConnectionModal.jsx`)
+
+Project Panda operates as a TeamSpeak/Discord-style distributed ecosystem where client apps dynamically connect to local or self-hosted remote server nodes:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    PROJECT PANDA WINDOWS ELECTRON APP                   │
+│                    PROJECT PANDA CLIENT (ELECTRON APP)                  │
 │                                                                         │
-│  ┌─────────────────────────┐           ┌─────────────────────────────┐  │
-│  │ Electron Main Process   │           │ Electron Renderer Process   │  │
-│  │ (electron/main.cjs)     │           │ (React 19 + Vite 8 + HUD)   │  │
-│  └────────────┬────────────┘           └──────────────┬──────────────┘  │
-│               │ Spawns Child                          │ IPC Bridge      │
-│               ▼                                       ▼                 │
-│  ┌─────────────────────────┐           ┌─────────────────────────────┐  │
-│  │ Local Node Express      │◄──────────┤ preload.cjs Window Controls │  │
-│  │ (server/server.cjs)     │ HTTP/WS   │ (Minimize, Flash, Notify)   │  │
-│  └─────────────────────────┘           └─────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────────┘
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │ Server Connection Manager (ServerConnectionModal.jsx / Globe Icon)│  │
+│  │ Active Node URL: localStorage.getItem('panda_server_url')         │  │
+│  └───────────────────────────────┬───────────────────────────────────┘  │
+└──────────────────────────────────┼──────────────────────────────────────┘
+                                   │ Dynamic API & Sockets (getServerUrl())
+         ┌─────────────────────────┼─────────────────────────┐
+         ▼                         ▼                         ▼
+ ┌───────────────┐       ┌───────────────────┐     ┌───────────────────┐
+ │ Local Node    │       │ Standalone VPS    │     │ LAN Server Node   │
+ │ (Embedded)    │       │ (npm run server:  │     │ (Self-Hosted)     │
+ │ localhost:3001│       │  standalone)      │     │ 192.168.1.100:3001│
+ └───────────────┘       └───────────────────┘     └───────────────────┘
 ```
+
+- **Dynamic Server URL Resolver (`src/utils/apiConfig.js`)**: All HTTP API requests and Socket.io client instances query `getServerUrl()`, reading `panda_server_url` from `localStorage` (default: `http://localhost:3001`).
+- **Ping & Latency Testing**: `pingServerNode(url)` queries `/api/ping` to test server status, MOTD, version, online user count, and millisecond ping latency before connecting.
+- **Standalone Server Mode (`npm run server:standalone`)**: `server/server.cjs` runs independently on VPS/Linux/Docker with configurable environment variables (`PORT`, `HOST`, `SERVER_NAME`, `SERVER_MOTD`).
 
 ---
 
