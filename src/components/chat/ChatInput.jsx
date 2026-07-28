@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Paperclip, Smile, Send, X, Image as ImageIcon, Bold, Italic, Code, EyeOff } from 'lucide-react';
 import { useServer } from '../../context/ServerContext';
+import { getServerUrl } from '../../utils/apiConfig';
 
 const POPULAR_EMOJIS = ['😊', '😂', '🔥', '👍', '❤️', '🚀', '🎉', '🎮', '💻', '✨', '🙌', '💯'];
 
@@ -29,7 +30,8 @@ export const ChatInput = ({ replyTo, onCancelReply, channelName }) => {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/upload`, {
         method: 'POST',
         body: formData
       });

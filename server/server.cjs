@@ -18,10 +18,25 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || '0.0.0.0';
+const SERVER_NAME = process.env.SERVER_NAME || 'Project Panda Community Node';
+const SERVER_MOTD = process.env.SERVER_MOTD || 'Welcome to self-hosted Project Panda local communication node!';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Server Ping & Status Endpoint for Remote Clients / Node Switcher
+app.get('/api/ping', (req, res) => {
+  res.json({
+    status: 'online',
+    serverName: SERVER_NAME,
+    motd: SERVER_MOTD,
+    version: '1.2.0',
+    usersOnline: connectedSockets.size,
+    timestamp: Date.now()
+  });
+});
 
 // Ensure uploads folder
 const UPLOADS_DIR = path.join(__dirname, '..', 'uploads');

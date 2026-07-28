@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
+import { getServerUrl } from '../utils/apiConfig';
 
 const SocketContext = createContext();
 
@@ -10,7 +11,8 @@ export const SocketProvider = ({ children }) => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3001', {
+    const serverUrl = getServerUrl();
+    const newSocket = io(serverUrl, {
       transports: ['websocket', 'polling']
     });
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { MessageSquare, Plus, Compass } from 'lucide-react';
+import { MessageSquare, Plus, Globe } from 'lucide-react';
 import { useServer } from '../../context/ServerContext';
 
-export const ServersBar = ({ onOpenAddServer }) => {
+export const ServersBar = ({ onOpenAddServer, onOpenNodeManager }) => {
   const { servers, activeServerId, setActiveServerId } = useServer();
 
   return (
@@ -15,6 +15,16 @@ export const ServersBar = ({ onOpenAddServer }) => {
       >
         <div className="server-pill"></div>
         <MessageSquare size={24} />
+      </div>
+
+      {/* Server Node Connection Manager Button */}
+      <div 
+        className="server-icon add-btn"
+        onClick={onOpenNodeManager}
+        title="Server Node Manager (TeamSpeak Host Connection)"
+        style={{ color: 'var(--neon-cyan)', border: '1px solid var(--neon-cyan)' }}
+      >
+        <Globe size={22} />
       </div>
 
       <div className="servers-separator"></div>

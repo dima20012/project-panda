@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { useAuth } from './AuthContext';
 import { useSocket } from './SocketContext';
 import { soundFx } from '../utils/soundEffects';
+import { getServerUrl } from '../utils/apiConfig';
 
 const ServerContext = createContext();
 
@@ -19,7 +20,8 @@ export const ServerProvider = ({ children }) => {
   // Fetch initial servers & data
   const fetchServers = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/initial');
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/initial`);
       const data = await res.json();
       setServers(data.servers || []);
 
@@ -57,7 +59,8 @@ export const ServerProvider = ({ children }) => {
   const fetchMessages = useCallback(async (channelId) => {
     if (!channelId) return;
     try {
-      const res = await fetch(`http://localhost:3001/api/channels/${channelId}/messages`);
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/channels/${channelId}/messages`);
       const data = await res.json();
       setMessages(data);
     } catch (err) {
@@ -69,7 +72,8 @@ export const ServerProvider = ({ children }) => {
   const fetchDMMessages = useCallback(async (userA, userB) => {
     if (!userA || !userB) return;
     try {
-      const res = await fetch(`http://localhost:3001/api/dms/${userA}/${userB}`);
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/dms/${userA}/${userB}`);
       const data = await res.json();
       setMessages(data);
     } catch (err) {
@@ -225,7 +229,8 @@ export const ServerProvider = ({ children }) => {
 
   const createServer = async (name, icon, description) => {
     try {
-      const res = await fetch('http://localhost:3001/api/servers', {
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/servers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, icon, description, ownerId: currentUser.id })
@@ -243,7 +248,8 @@ export const ServerProvider = ({ children }) => {
 
   const joinServerByInvite = async (inviteCode) => {
     try {
-      const res = await fetch('http://localhost:3001/api/servers/join', {
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/servers/join`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inviteCode })
@@ -266,7 +272,8 @@ export const ServerProvider = ({ children }) => {
 
   const createChannel = async (serverId, categoryId, name, type = 'text', topic = '') => {
     try {
-      const res = await fetch('http://localhost:3001/api/channels', {
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/channels`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ serverId, categoryId, channelData: { name, type, topic } })

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "server": "node server/server.cjs",
+    "server:standalone": "node server/server.cjs",
     "start": "electron .",
     "app": "electron .",
     "build": "vite build",

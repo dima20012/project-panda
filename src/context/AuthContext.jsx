@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getServerUrl } from '../utils/apiConfig';
 
 const AuthContext = createContext();
 
@@ -9,7 +10,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchInitialData = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/initial');
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/initial`);
       const data = await res.json();
       setAllUsers(data.users || []);
       
@@ -41,7 +43,8 @@ export const AuthProvider = ({ children }) => {
   const updateUserProfile = async (updates) => {
     if (!currentUser) return;
     try {
-      const res = await fetch('http://localhost:3001/api/users/profile', {
+      const baseUrl = getServerUrl();
+      const res = await fetch(`${baseUrl}/api/users/profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: currentUser.id, updates })

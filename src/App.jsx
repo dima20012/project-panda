@@ -23,6 +23,7 @@ import { UserSettingsModal } from './components/modals/UserSettingsModal';
 import { SearchModal } from './components/modals/SearchModal';
 
 import { PinnedModal } from './components/modals/PinnedModal';
+import { ServerConnectionModal } from './components/modals/ServerConnectionModal';
 
 const HarmonyAppContent = () => {
   const { activeServerId, activeChannel, channels, selectChannel } = useServer();
@@ -39,6 +40,7 @@ const HarmonyAppContent = () => {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showPinnedModal, setShowPinnedModal] = useState(false);
+  const [showNodeManagerModal, setShowNodeManagerModal] = useState(false);
 
   // Global Keyboard Shortcuts
   useKeyboardShortcuts({
@@ -49,6 +51,7 @@ const HarmonyAppContent = () => {
       setShowInviteModal(false);
       setShowAddServerModal(false);
       setShowPinnedModal(false);
+      setShowNodeManagerModal(false);
       setCreateCategoryTarget(null);
     },
     onPrevChannel: () => {
@@ -97,7 +100,10 @@ const HarmonyAppContent = () => {
 
       <div className="app-container">
         {/* 1. Leftmost Server Navigation Sidebar */}
-        <ServersBar onOpenAddServer={() => setShowAddServerModal(true)} />
+        <ServersBar 
+          onOpenAddServer={() => setShowAddServerModal(true)} 
+          onOpenNodeManager={() => setShowNodeManagerModal(true)}
+        />
 
         {/* 2. Channels Sidebar */}
         <ChannelsSidebar 
@@ -156,6 +162,10 @@ const HarmonyAppContent = () => {
 
         {showSearchModal && (
           <SearchModal onClose={() => setShowSearchModal(false)} />
+        )}
+
+        {showNodeManagerModal && (
+          <ServerConnectionModal onClose={() => setShowNodeManagerModal(false)} />
         )}
       </div>
     </div>
