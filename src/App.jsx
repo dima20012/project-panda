@@ -22,6 +22,8 @@ import { InviteModal } from './components/modals/InviteModal';
 import { UserSettingsModal } from './components/modals/UserSettingsModal';
 import { SearchModal } from './components/modals/SearchModal';
 
+import { PinnedModal } from './components/modals/PinnedModal';
+
 const HarmonyAppContent = () => {
   const { activeServerId, activeChannel, channels, selectChannel } = useServer();
   const { activeVoiceChannelId, isMuted, setIsMuted } = useVoice();
@@ -36,6 +38,7 @@ const HarmonyAppContent = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showPinnedModal, setShowPinnedModal] = useState(false);
 
   // Global Keyboard Shortcuts
   useKeyboardShortcuts({
@@ -45,6 +48,7 @@ const HarmonyAppContent = () => {
       setShowSettingsModal(false);
       setShowInviteModal(false);
       setShowAddServerModal(false);
+      setShowPinnedModal(false);
       setCreateCategoryTarget(null);
     },
     onPrevChannel: () => {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Hash, Volume2, Users, Search, Download } from 'lucide-react';
+import { Hash, Volume2, Users, Search, Download, Pin } from 'lucide-react';
 import { useServer } from '../../context/ServerContext';
 
-export const ChatHeader = ({ onToggleMembers, showMembers, onOpenSearch }) => {
+export const ChatHeader = ({ onToggleMembers, showMembers, onOpenSearch, onOpenPinned }) => {
   const { activeChannel, typingUsers, messages } = useServer();
 
   if (!activeChannel) return null;
@@ -47,6 +47,14 @@ export const ChatHeader = ({ onToggleMembers, showMembers, onOpenSearch }) => {
             {typingUsers.join(', ')} {typingUsers.length === 1 ? 'is' : 'are'} typing...
           </div>
         )}
+
+        <button 
+          className="icon-btn" 
+          onClick={onOpenPinned}
+          title="Pinned Messages"
+        >
+          <Pin size={18} />
+        </button>
 
         <button 
           className="icon-btn" 
