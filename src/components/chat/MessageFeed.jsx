@@ -8,7 +8,7 @@ import { ImageLightboxModal } from '../modals/ImageLightboxModal';
 const QUICK_EMOJIS = ['👍', '❤️', '🔥', '🎉', '🎮', '🚀', '😂', '💯'];
 
 export const MessageFeed = ({ onSetReply }) => {
-  const { messages, toggleReaction, editMessage, deleteMessage } = useServer();
+  const { messages, toggleReaction, togglePinMessage, editMessage, deleteMessage } = useServer();
   const { currentUser, allUsers } = useAuth();
 
   const [editingMsgId, setEditingMsgId] = useState(null);
@@ -162,6 +162,13 @@ export const MessageFeed = ({ onSetReply }) => {
                   onClick={() => onSetReply({ id: msg.id, authorName: author.displayName || author.username, content: msg.content })}
                 >
                   <Reply size={16} />
+                </button>
+                <button 
+                  className={`icon-btn ${msg.pinned ? 'active' : ''}`} 
+                  title={msg.pinned ? 'Unpin Message' : 'Pin Message'}
+                  onClick={() => togglePinMessage(msg.id)}
+                >
+                  <Pin size={16} />
                 </button>
 
                 {isOwner && (

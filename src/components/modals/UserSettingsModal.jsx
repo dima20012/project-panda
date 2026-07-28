@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useVoice } from '../../context/VoiceContext';
-import { UserCheck, Sparkles, Palette, User, Keyboard, Mic, Volume2, Video } from 'lucide-react';
+import { UserCheck, Sparkles, Palette, User, Keyboard, Mic, Volume2, Video, Database, Download, Upload, ShieldCheck } from 'lucide-react';
+import { getServerUrl } from '../../utils/apiConfig';
 
 export const UserSettingsModal = ({ onClose }) => {
   const { currentUser, allUsers, switchUser, updateUserProfile } = useAuth();
@@ -147,6 +148,14 @@ export const UserSettingsModal = ({ onClose }) => {
               onClick={() => setActiveTab('hotkeys')}
             >
               <Keyboard size={14} style={{ marginRight: '4px' }} /> Hotkeys
+            </button>
+
+            <button
+              className={`btn ${activeTab === 'backup' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ fontSize: '12px', padding: '6px 12px' }}
+              onClick={() => setActiveTab('backup')}
+            >
+              <Database size={14} style={{ marginRight: '4px' }} /> Backup & Ops
             </button>
           </div>
         </div>
@@ -534,6 +543,92 @@ export const UserSettingsModal = ({ onClose }) => {
                   </span>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Tab 5: Backup & Operations */}
+          {activeTab === 'backup' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ background: 'var(--bg-space)', padding: '16px', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
+                <div style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Download size={18} style={{ color: 'var(--neon-cyan)' }} />
+                  Export Node Database Backup (.json)
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px' }}>
+                  Download a complete backup of all servers, channels, users, and message history stored on the active node.
+                </div>
+                <button 
+                  className="btn btn-primary"
+                  onClick={async () => {
+                    try {
+                      const baseUrl = getServerUrl();
+                      const res = await fetch(`${baseUrl}/api/server/backup`);
+                      if (res.ok) {
+                        const data = await res.json();
+                        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `panda_db_backup_${Date.now()}.json`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                      }
+                    } catch (err) {
+                      alert('Failed to download backup: ' + err.message);
+                    }
+                  }}
+                >
+                  <Download size={14} style={{ marginRight: '6px' }} /> Download Backup
+                </button>
+              </div>
+
+              <div style={{ background: 'var(--bg-space)', padding: '16px', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
+                <div style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Upload size={18} style={{ color: 'var(--neon-emerald)' }} />
+                  Restore Node Database (.json)
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px' }}>
+                  Restore node database from a previously saved JSON backup file. WARNING: This replaces current node state.
+                </div>
+                <input 
+                  type="file" 
+                  accept=".json"
+                  style={{ display: 'none' }}
+                  id="restore-file-input"
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    try {
+                      const text = await file.text();
+                      const json = JSON.parse(text);
+                      const backupData = json.data || json;
+                      const baseUrl = getServerUrl();
+                      const res = await fetch(`${baseUrl}/api/server/restore`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ backupData })
+                      });
+                      if (res.ok) {
+                        alert('Server database restored successfully! Reloading...');
+                        window.location.reload();
+                      } else {
+                        alert('Failed to restore database. Check JSON file format.');
+                      }
+                    } catch (err) {
+                      alert('Invalid JSON file: ' + err.message);
+                    }
+                  }}
+                />
+                <button 
+                  className="btn btn-secondary"
+                  onClick={() => document.getElementById('restore-file-input')?.click()}
+                  style={{ border: '1px solid var(--neon-emerald)', color: 'var(--neon-emerald)' }}
+                >
+                  <Upload size={14} style={{ marginRight: '6px' }} /> Choose Backup File to Restore
+                </button>
+              </div>
             </div>
           )}
         </div>

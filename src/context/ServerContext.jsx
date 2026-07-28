@@ -218,6 +218,11 @@ export const ServerProvider = ({ children }) => {
     });
   };
 
+  const togglePinMessage = (messageId) => {
+    if (!socket || !activeChannelId) return;
+    socket.emit('toggle-pin-message', { channelId: activeChannelId, messageId });
+  };
+
   const sendTyping = () => {
     if (!socket || !activeChannelId || !currentUser) return;
     socket.emit('typing', {
@@ -235,14 +240,15 @@ export const ServerProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, icon, description, ownerId: currentUser.id })
       });
-      const newServer = await res.json();
-      setActiveServerId(newServer.id);
-      if (newServer.categories[0]?.channels[0]) {
-        setActiveChannelId(newServer.categories[0].channels[0].id);
+      if (res.ok) {
+        const newServer = await res.json();
+        setServers(prev => [...prev, newServer]);
+        setActiveServerId(newServer.id);
+        const firstChan = newServer.categories?.[0]?.channels?.[0];
+        if (firstChan) setActiveChannelId(firstChan.id);
       }
-      return newServer;
     } catch (err) {
-      console.error('Failed to create server:', err);
+      console.error('Error creating server:', err);
     }
   };
 
@@ -255,18 +261,14 @@ export const ServerProvider = ({ children }) => {
         body: JSON.stringify({ inviteCode })
       });
       if (res.ok) {
-        const server = await res.json();
-        setActiveServerId(server.id);
-        if (server.categories[0]?.channels[0]) {
-          setActiveChannelId(server.categories[0].channels[0].id);
-        }
-        return { success: true, server };
-      } else {
-        const error = await res.json();
-        return { success: false, error: error.error };
+        const joinedServer = await res.json();
+        setServers(prev => [...prev.filter(s => s.id !== joinedServer.id), joinedServer]);
+        setActiveServerId(joinedServer.id);
+        const firstChan = joinedServer.categories?.[0]?.channels?.[0];
+        if (firstChan) setActiveChannelId(firstChan.id);
       }
     } catch (err) {
-      return { success: false, error: 'Connection error' };
+      console.error('Error joining server:', err);
     }
   };
 
@@ -278,12 +280,18 @@ export const ServerProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ serverId, categoryId, channelData: { name, type, topic } })
       });
-      const channel = await res.json();
-      setActiveChannelId(channel.id);
-      return channel;
+      if (res.ok) {
+        const updatedServer = await res.json();
+        setServers(prev => prev.map(s => s.id === updatedServer.id ? updatedServer : s));
+      }
     } catch (err) {
-      console.error('Failed to create channel:', err);
+      console.error('Error creating channel:', err);
     }
+  };
+
+  const selectChannel = (channel) => {
+    setActiveChannelId(channel.id);
+    localStorage.setItem('panda_active_channel_id', channel.id);
   };
 
   const activeServer = servers.find(s => s.id === activeServerId);
@@ -296,6 +304,7 @@ export const ServerProvider = ({ children }) => {
       setActiveServerId,
       activeChannelId,
       setActiveChannelId,
+      selectChannel,
       activeServer,
       activeChannel,
       messages,
@@ -303,6 +312,7 @@ export const ServerProvider = ({ children }) => {
       editMessage,
       deleteMessage,
       toggleReaction,
+      togglePinMessage,
       sendTyping,
       typingUsers: typingUsers[activeChannelId] || [],
       createServer,

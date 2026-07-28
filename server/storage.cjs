@@ -371,6 +371,17 @@ class Storage {
     return msg;
   }
 
+  togglePinMessage(channelId, messageId) {
+    const msgs = this.data.messages[channelId];
+    if (!msgs) return null;
+    const msg = msgs.find(m => m.id === messageId);
+    if (!msg) return null;
+
+    msg.pinned = !msg.pinned;
+    this.save();
+    return msg;
+  }
+
   getDMKey(userA, userB) {
     return [userA, userB].sort().join('_');
   }

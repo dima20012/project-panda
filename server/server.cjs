@@ -38,6 +38,26 @@ app.get('/api/ping', (req, res) => {
   });
 });
 
+// Server Data Backup & Restore API Endpoints
+app.get('/api/server/backup', (req, res) => {
+  res.json({
+    version: '1.2.0',
+    timestamp: new Date().toISOString(),
+    data: storage.data
+  });
+});
+
+app.post('/api/server/restore', (req, res) => {
+  const { backupData } = req.body;
+  if (!backupData || !backupData.users || !backupData.servers) {
+    return res.status(400).json({ error: 'Invalid backup file structure' });
+  }
+  storage.data = backupData;
+  storage.save();
+  io.emit('server-data-restored');
+  res.json({ success: true, message: 'Server database restored successfully' });
+});
+
 // Ensure uploads folder
 const UPLOADS_DIR = path.join(__dirname, '..', 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) {
@@ -189,6 +209,13 @@ io.on('connection', (socket) => {
 
   socket.on('toggle-reaction', ({ channelId, messageId, emoji, userId }) => {
     const updated = storage.toggleReaction(channelId, messageId, emoji, userId);
+    if (updated) {
+      io.to(channelId).emit('message-updated', updated);
+    }
+  });
+
+  socket.on('toggle-pin-message', ({ channelId, messageId }) => {
+    const updated = storage.togglePinMessage(channelId, messageId);
     if (updated) {
       io.to(channelId).emit('message-updated', updated);
     }

@@ -79,4 +79,4 @@
 
 | Date / Timestamp | Status | Completed Checkpoints | Next Immediate Task |
 |---|---|---|---|
-| 2026-07-28 12:44 | 🟢 PHASE 3 COMPLETED | Integrated WebRTC Voice Activity Detection (VAD) and `voice-peer-state-changed` speaking indicators (`VoiceContext.jsx` & `VoiceGrid.jsx`). | Audit & Continuous Feature Refinements. |
+| 2026-07-28 12:47 | 🟢 DISCORD FEATURES & OPS COMPLETED | Added Message Pinning & Unpinning (`MessageFeed.jsx` & `server.cjs`), 1-Click Server Backup & Restore JSON Export/Import (`UserSettingsModal.jsx` & `/api/server/backup`), and 11-feature Discord/TeamSpeak roadmap. | Role-Based Access Badges & System Tray options. |
