@@ -1,13 +1,20 @@
 # 📋 Project Information — Project Panda 🐼
 
 ## 🎯 Overview
-**Project Panda** is a native Windows desktop communication app with a custom Holographic Sci-Fi Glassmorphism user interface. Built with Electron, React 19, Express, Socket.io, and WebRTC, it provides real-time chat, voice, video, screen sharing, sci-fi theme customization, hardware device selection, state persistence, and local data storage.
+**Project Panda** is a native Windows desktop communication app with a custom Holographic Sci-Fi Glassmorphism user interface. Built with Electron, React 19, Express, Socket.io, and WebRTC, it provides real-time chat, voice, video, screen sharing, sci-fi theme customization, hardware device selection, self-hosted node management, state persistence, and local data storage.
 
 - **GitHub Repository**: [https://github.com/dima20012/project-panda](https://github.com/dima20012/project-panda)
+- **Continuous Development Plan**: [CONTINUOUS_DEV_PLAN.md](file:///C:/ProjectDC/CONTINUOUS_DEV_PLAN.md)
 
 ---
 
 ## ✨ Features & Capabilities
+
+### 🌐 TeamSpeak-Style Self-Hosted Distributed Architecture (`apiConfig.js`)
+- **Dynamic Node URL Resolution (`getServerUrl`)**: Clients dynamically target any local or remote server node stored in `localStorage` (`panda_server_url`).
+- **Server Health & Latency Pinging (`/api/ping`)**: Measures real-time connection latency in milliseconds, node version, custom server name (`SERVER_NAME`), MOTD (`SERVER_MOTD`), and connected socket count.
+- **Node Connection Manager Modal (`ServerConnectionModal.jsx`)**: Accessible via the Globe button on the server sidebar for quick testing and server node switching.
+- **Standalone Dedicated Server Mode (`server/server.cjs`)**: Run standalone community nodes on LAN or cloud VPS instances via `npm run server:standalone` with configurable environment variables.
 
 ### 💬 Rich Chat & Media Enhancements
 - **Drag & Drop Attachment Overlay (`ChatInput.jsx`)**: Drop files anywhere onto the chat input zone to attach images or media files instantly with a visual cyan glass overlay.
@@ -80,10 +87,11 @@
 
 ## 💾 Local Storage Persistence Schema
 
-Project Panda persists user theme, navigation, profile, and audio/video device preferences in browser `localStorage`:
+Project Panda persists user theme, navigation, profile, server node, and audio/video device preferences in browser `localStorage`:
 
 | Key | Description | Default Value |
 | --- | --- | --- |
+| `panda_server_url` | Currently active self-hosted server node URL | `'http://localhost:3001'` |
 | `panda_theme` | Selected holographic color theme preset | `'obsidian'` |
 | `panda_blur` | Glassmorphism backdrop blur in pixels | `12` |
 | `panda_glow` | Neon glow shadow radius in pixels | `10` |
@@ -114,4 +122,4 @@ Project Panda persists user theme, navigation, profile, and audio/video device p
 - **Audio Synthesizer**: Web Audio API Sound Generator (`soundEffects.js`)
 - **File Upload Handler**: Multer
 - **Database**: Local JSON File Storage (`data/db.json`)
-- **Master Development Plan**: [FEATURE_PLAN.md](file:///C:/ProjectDC/FEATURE_PLAN.md)
+- **Master Continuous Plan**: [CONTINUOUS_DEV_PLAN.md](file:///C:/ProjectDC/CONTINUOUS_DEV_PLAN.md)
