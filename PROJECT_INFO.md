@@ -10,6 +10,12 @@
 
 ## ✨ Features & Capabilities
 
+### 🎥 Native Desktop Screen Sharing & Voice Grid HUD
+- **Voice Activity Detection (VAD) & Speaking Indicator Rings (`VoiceGrid.jsx` & `VoiceContext.jsx`)**: Real-time microphone audio volume tracking that highlights active voice speakers with animated neon emerald glow rings.
+- **Electron Screen & Window Picker Modal (`ScreenShareModal.jsx`)**: Native window and screen source selector powered by Electron `getDesktopSources` IPC bridge with real-time thumbnail previews.
+- **Sticky Voice Control Bar**: Bottom voice action HUD (`flex-shrink: 0`) remains permanently visible and accessible even with active multi-user camera tiles or high-resolution screen streams.
+- **Instant Disconnect Reset**: Disconnecting from a voice room immediately returns the main stage UI back to the text channel view.
+
 ### 🌐 TeamSpeak-Style Self-Hosted Distributed Architecture (`apiConfig.js`)
 - **Dynamic Node URL Resolution (`getServerUrl`)**: Clients dynamically target any local or remote server node stored in `localStorage` (`panda_server_url`).
 - **Server Health & Latency Pinging (`/api/ping`)**: Measures real-time connection latency in milliseconds, node version, custom server name (`SERVER_NAME`), MOTD (`SERVER_MOTD`), and connected socket count.
@@ -25,11 +31,6 @@
 - **Inline Audio & Video Players (`MessageFeed.jsx`)**: Native HTML5 `<audio>` and `<video>` players for mp3, wav, ogg, mp4, and webm file attachments.
 - **One-Click Chat Export (`ChatHeader.jsx`)**: Export entire channel conversation history into formatted `.md` (Markdown) files with a single click.
 - **Code Block Copy Button**: Quick code copy button with checkmark confirmation animation.
-
-### 🎥 Native Desktop Screen Sharing & Voice Grid HUD
-- **Electron Screen & Window Picker Modal (`ScreenShareModal.jsx`)**: Native window and screen source selector powered by Electron `getDesktopSources` IPC bridge with real-time thumbnail previews.
-- **Sticky Voice Control Bar**: Bottom voice action HUD (`flex-shrink: 0`) remains permanently visible and accessible even with active multi-user camera tiles or high-resolution screen streams.
-- **Instant Disconnect Reset**: Disconnecting from a voice room immediately returns the main stage UI back to the text channel view.
 
 ### 🎙️ Audio & Video Hardware Management (`VoiceContext.jsx` & `UserSettingsModal.jsx`)
 - **Microphone & Speaker Selection**: Dedicated dropdown selectors for input microphones and output speakers/headsets.

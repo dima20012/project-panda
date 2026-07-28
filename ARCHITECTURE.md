@@ -21,7 +21,7 @@ This document details the architectural layout of the native Windows Electron De
 │  │ Standalone / Embedded Node Server (Express + Socket.io + WebRTC Signaler) │  │
 │  │ Host: 0.0.0.0:3001 • Endpoint: /api/ping • Storage: data/db.json          │  │
 │  └───────────────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -41,10 +41,14 @@ This document details the architectural layout of the native Windows Electron De
 
 ---
 
-## 🎙️ WebRTC Voice/Video, Screen Share & Hardware Routing (`VoiceContext.jsx`)
+## 🎙️ WebRTC Voice/Video, VAD Speaking Rings & Hardware Routing (`VoiceContext.jsx`)
 
-`VoiceContext.jsx` manages WebRTC mesh connections (`RTCPeerConnection`), audio/video capture, hardware device routing, and native desktop screen sharing:
+`VoiceContext.jsx` manages WebRTC mesh connections (`RTCPeerConnection`), audio/video capture, Voice Activity Detection (VAD), hardware device routing, and native desktop screen sharing:
 
+- **Voice Activity Detection (VAD) & Speaking Indicator Rings (`VoiceGrid.jsx`)**:
+  - Monitors local and remote microphone audio volume via `AudioContext` & `AnalyserNode` calculation.
+  - Broadcasts `isSpeaking` states over Socket.io (`voice-peer-state-changed`).
+  - Highlights active speakers in `VoiceGrid.jsx` with animated neon emerald glow rings (`video-card.speaking`).
 - **Desktop Screen & Window Sharing (`ScreenShareModal.jsx`)**:
   - Invokes `window.electronAPI.getDesktopSources()` via IPC to fetch thumbnails and handles of open desktop windows and monitors.
   - Passes target `sourceId` into `startScreenShareWithSourceId(sourceId)` using Chrome desktop constraints (`chromeMediaSource: 'desktop'`, `chromeMediaSourceId: sourceId`).
