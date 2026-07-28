@@ -26,7 +26,7 @@ This document details the architectural layout of the native Windows Electron De
 
 ---
 
-## 📡 Dynamic Node Resolution & Latency Pinging (`apiConfig.js`)
+## 📡 Dynamic Node Resolution & Latency Pinging (`apiConfig.js` & `ChannelsSidebar.jsx`)
 
 1. **Dynamic Server URL Resolver (`getServerUrl()`)**: Reads target node URL from `localStorage.getItem('panda_server_url')` (defaulting to `http://localhost:3001`). Strips trailing slashes cleanly.
 2. **Node Health & Latency Probe (`pingServerNode(targetUrl)`)**: Hits `/api/ping` via GET request to measure round-trip ping latency (ms) and verify:
@@ -34,9 +34,10 @@ This document details the architectural layout of the native Windows Electron De
    - `motd`: Node welcome message (`SERVER_MOTD`).
    - `version`: Node software version (`1.2.0`).
    - `usersOnline`: Count of active connected Socket.io sockets.
-3. **Node Connection Manager Modal (`ServerConnectionModal.jsx`)**: Accessible via Globe button in `ServersBar.jsx`. Provides connection testing, ping latency displays, preset switching (Local Embedded vs. LAN Node Host), and seamless client re-initialization.
-4. **Standalone Dedicated Server Mode**: Powered by `server/server.cjs` (`npm run server:standalone`), listening on `0.0.0.0:3001` with environment variables (`PORT`, `HOST`, `SERVER_NAME`, `SERVER_MOTD`) for self-hosted VPS/home server deployments.
-5. **Continuous Tracker (`CONTINUOUS_DEV_PLAN.md`)**: Tracks master continuous development plan and state checkpoints.
+3. **Automatic 15s Background Polling (`ChannelsSidebar.jsx`)**: The sidebar header periodically executes `pingServerNode()` every 15 seconds to display a live health status badge (`🟢 Node Name • 12ms`) indicating node connectivity and round-trip ping times.
+4. **Node Connection Manager Modal (`ServerConnectionModal.jsx`)**: Accessible via Globe button in `ServersBar.jsx`. Provides connection testing, ping latency displays, preset switching (Local Embedded vs. LAN Node Host), and seamless client re-initialization.
+5. **Standalone Dedicated Server Mode**: Powered by `server/server.cjs` (`npm run server:standalone`), listening on `0.0.0.0:3001` with environment variables (`PORT`, `HOST`, `SERVER_NAME`, `SERVER_MOTD`) for self-hosted VPS/home server deployments.
+6. **Continuous Tracker (`CONTINUOUS_DEV_PLAN.md`)**: Tracks master continuous development plan and state checkpoints.
 
 ---
 

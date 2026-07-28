@@ -13,6 +13,7 @@
 ### 🌐 TeamSpeak-Style Self-Hosted Distributed Architecture (`apiConfig.js`)
 - **Dynamic Node URL Resolution (`getServerUrl`)**: Clients dynamically target any local or remote server node stored in `localStorage` (`panda_server_url`).
 - **Server Health & Latency Pinging (`/api/ping`)**: Measures real-time connection latency in milliseconds, node version, custom server name (`SERVER_NAME`), MOTD (`SERVER_MOTD`), and connected socket count.
+- **Live Node Status Badge (`ChannelsSidebar.jsx`)**: Sidebar header displays a real-time status badge (`🟢 Node Name • 12ms`) updated continuously via a 15-second background ping timer.
 - **Node Connection Manager Modal (`ServerConnectionModal.jsx`)**: Accessible via the Globe button on the server sidebar for quick testing and server node switching.
 - **Standalone Dedicated Server Mode (`server/server.cjs`)**: Run standalone community nodes on LAN or cloud VPS instances via `npm run server:standalone` with configurable environment variables.
 
