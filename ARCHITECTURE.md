@@ -130,6 +130,9 @@ Real-time audio feedback generated dynamically using browser native Web Audio AP
 
 ## 💬 Rich Chat & Media Pipeline
 
+- **Drag & Drop Attachment Overlay (`ChatInput.jsx`)**: HTML5 Drag & Drop event handlers (`onDragOver`, `onDragLeave`, `onDrop`) triggering visual backdrop blur overlay and dispatching dropped files directly to `/api/upload`.
+- **Text Formatting Quick Toolbar (`ChatInput.jsx`)**: Quick action bar providing single-click inline Markdown insertion for **Bold** (`**`), *Italic* (`*`), `Inline Code` (`` ` ``), and ||Spoiler|| (`||`).
+- **Pinned Messages Drawer (`PinnedModal.jsx` & `ChatHeader.jsx`)**: Dedicated channel drawer modal triggered from `ChatHeader.jsx` that filters channel messages (`messages.filter(m => m.pinned)`) and renders pinned message cards with Markdown support.
 - **Spoiler Text Filter (`MarkdownText.jsx`)**: Transforms `||text||` markup into blurred click-to-reveal elements (`filter: blur(5px)` toggled to clear on click).
 - **Inline Media Players (`MessageFeed.jsx`)**: Auto-detects attachment MIME types/extensions (`mp3`, `wav`, `ogg`, `mp4`, `webm`) and embeds HTML5 `<audio controls>` or `<video controls>`.
 - **Chat History Markdown Exporter (`ChatHeader.jsx`)**: Serializes channel message stream into formatted `.md` documents with client-side blob download (`panda_chat_{channel}_{timestamp}.md`).

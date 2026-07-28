@@ -9,6 +9,15 @@
 
 ## ✨ Features & Capabilities
 
+### 💬 Rich Chat & Media Enhancements
+- **Drag & Drop Attachment Overlay (`ChatInput.jsx`)**: Drop files anywhere onto the chat input zone to attach images or media files instantly with a visual cyan glass overlay.
+- **Text Formatting Quick Toolbar (`ChatInput.jsx`)**: One-click quick toolbar for inserting Bold (`**text**`), Italic (`*text*`), Code (`` `text` ``), and Spoiler (`||text||`) Markdown formatting.
+- **Pinned Messages Drawer (`PinnedModal.jsx`)**: View all pinned channel announcements in a dedicated channel modal accessible from the chat header.
+- **Spoiler Blur Masks (`MarkdownText.jsx`)**: Wrap text in `||spoiler||` to render blurred text that reveals on click.
+- **Inline Audio & Video Players (`MessageFeed.jsx`)**: Native HTML5 `<audio>` and `<video>` players for mp3, wav, ogg, mp4, and webm file attachments.
+- **One-Click Chat Export (`ChatHeader.jsx`)**: Export entire channel conversation history into formatted `.md` (Markdown) files with a single click.
+- **Code Block Copy Button**: Quick code copy button with checkmark confirmation animation.
+
 ### 🎥 Native Desktop Screen Sharing & Voice Grid HUD
 - **Electron Screen & Window Picker Modal (`ScreenShareModal.jsx`)**: Native window and screen source selector powered by Electron `getDesktopSources` IPC bridge with real-time thumbnail previews.
 - **Sticky Voice Control Bar**: Bottom voice action HUD (`flex-shrink: 0`) remains permanently visible and accessible even with active multi-user camera tiles or high-resolution screen streams.
@@ -63,12 +72,6 @@
 - `Alt + Up / Down`: Instantly cycle through server channels.
 - `Ctrl + Shift + M`: Global voice microphone mute/unmute toggle.
 - `Esc`: Instantly close active modals, user settings, or image lightbox view.
-
-### 💬 Rich Chat & Media Enhancements
-- **Spoiler Blur Masks (`MarkdownText.jsx`)**: Wrap text in `||spoiler||` to render blurred text that reveals on click.
-- **Inline Audio & Video Players (`MessageFeed.jsx`)**: Native HTML5 `<audio>` and `<video>` players for mp3, wav, ogg, mp4, and webm file attachments.
-- **One-Click Chat Export (`ChatHeader.jsx`)**: Export entire channel conversation history into formatted `.md` (Markdown) files with a single click.
-- **Code Block Copy Button**: Quick code copy button with checkmark confirmation animation.
 
 ### 🔊 Web Audio Synthesizer (`utils/soundEffects.js`)
 - Zero-dependency synthetic Web Audio API sound generator providing immediate audio feedback for voice join, microphone mute, and new messages.
