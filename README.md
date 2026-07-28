@@ -5,7 +5,7 @@
 ![Project Panda Interface](public/screenshots/app_main.png)
 
 - **GitHub Repository**: [https://github.com/dima20012/project-panda](https://github.com/dima20012/project-panda)
-- **Latest Windows Release (v1.2.0)**: [https://github.com/dima20012/project-panda/releases/tag/v1.2.0](https://github.com/dima20012/project-panda/releases/tag/v1.2.0)
+- **Latest Windows Release (v1.3.0)**: [https://github.com/dima20012/project-panda/releases/tag/v1.3.0](https://github.com/dima20012/project-panda/releases/tag/v1.3.0)
 
 ---
 
